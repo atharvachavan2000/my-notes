@@ -1,0 +1,65 @@
+Testing: 
+========
+Process of evaluating and verifying that a software application or system meets specified requirements and works as intended.
+The primary goals of testing are to identify defects, ensure quality, and validate that the software performs its intended functions correctly and efficiently. 
+Testing can be performed at various stages of the software development lifecycle and can take many forms.
+
+Types of testing:
+1. Unit Testing: 
+Testing individual components or units of code (such as functions or methods) in isolation to ensure they work correctly. Often automated, and first level of testing.
+
+2. Integration Testing: 
+Testing the interactions between different components or systems to ensure they work together as expected. 
+This involves testing interfaces, data flow and communication between modules.
+
+3. System Testing:
+Testing of the entire software system as a whole, usually in staging environment.
+
+4. Acceptance Testing:  ====> UAT 
+Testing conducted to determine whether the software is ready for delivery. Often done by end-users or clients.
+
+5. Regression Testing: 
+Rerunning successful test cases again after making any changes to check if new bugs are not introduced.
+
+6. Performance Testing:
+Testing responsiveness, stability and scalabiliy => Load testing, stress testing and endurance testing.
+
+7. Security Testing:
+identify vulnerabilities, threats and risks
+
+8. Usability: 
+User-friendly and intuitive. => Observing real users as they interact with it.
+
+9. Compatibility Testing:
+Works correctly across different devices, operating systems, browsers and configurations.
+
+10. Exploratory Testing:
+Tests explore the software randomly to discover effects and issues
+
+Black Box Testing: 
+evaluating the functionality of the software without looking into its internal code structure, implementation details, or internal paths. The tester is only aware of what the software is supposed to do, not how it does it. This type of testing is based on the software requirements and specifications.
+Commonly used for: System Testing and Acceptance testing
+
+White Box Testing: (Clear Box, Glass Box) 
+Testing internal structures or workings of an application
+Performed by developers
+Commonly used for: Unit testing, Integration testing, Code Coverage, Path Testing
+
+Gray Box Testing: 
+Mixture of Black and White
+Regression, Penetration, Database
+
+
+Vite => common web patterns (?), glob imports (?)
+
+Test Runner? 
+
+Vitest: Test runner that uses the same configuration of you App
+        Common transformation pipeline during dev, build and test time.
+
+Testing files: Must contain ".test." or ".spec."
+
+Sample test:
+test(<INSERT_TEST_NAME>, () => {
+    expect('Something').toBe / toContain / toEqual('some result');
+})

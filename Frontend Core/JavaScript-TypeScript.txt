@@ -1,0 +1,644 @@
+JavaScript Proxies => Done (Not Writter)
+getters and setters in Javascript?? 
+
+***********************
+      JavaScript
+***********************
+ 
+Javascript: Lightweight interpreted or just-in-time compiled programming language
+            Prototype-based, multi-paradigm, single-threaded, dynamic language.
+Supporting: object-oriented, imperative and declarative styles.
+Non-browser environments: Node.js, Apache CouchDB, Adobe Acrobat.
+Dynamic Capabilities: Runtime Object Construction, Variable Parameter Lists, Function Variables, Dynamic Script Creation, Object Introspection, Source-Code Recovery
+
+
+Features Introduced in ES6:
+1. Block Scoped Variables -> Let, Const
+2. Arrow Functions
+3. Template Literals (``)
+4. Default Parameteres
+5. Destructuring Assignment
+6. Rest and Spread Operators
+7. classes
+8. Modules
+9. Promises
+10. Map and Sets
+
+
+Everything in javascript happens inside an "Execution Context"
+
+EC => Memory Component (Variable Environment) : key:value pairs of variables and functions.
+      Code Component (Thread of Execution): Code executed one line at a time.
+
+Synchronous, Single-Threaded Language => Only one command at a time, in a specific order.
+
+Global EC is created: 
+Memory Creation Phase: 
+    allocate memory to all variables and functions
+    variables: stores undefined.
+    functions: stores whole code.
+Code Execution Phase:
+    stores assigned value in memory phase.
+    upon coming accross a function invocation, 
+        another EC is created.
+        again memory creation phase occurs => parameters and variable decalations and functions
+        in code exe phase, value of arg is stored in val of parameter
+        after return from function, its EC will be deleted entirely.
+
+CallStack => Bottom = Global Execution Context, Function invocations generate EC contexts and push them in callstacks.
+(Execution Context stack, Program stack, control stack, runtime stack, machine stack)
+    
+Hoisting: Made possible because of the memory creation phase.
+Accessing variables before declaring results in undefined.
+Accessing functions before declaring doesn't do any thing. Just prints entire block of code.
+Arrow functions cannot be hoisted as they are essentially variables
+
+// Official
+JavaScript Hoisting refers to the process whereby the interpreter appears to move the declaration of functions, variables, classes, or imports to the top of their scope, prior to execution of the code.
+
+Hoisting: 
+Type 1: Value Hoisting => Being able to use value of variable in it's scope before it's declared => functions, import
+Type 2: Declaration Hoisting => Being able to reference a variable before the line it is declared, however with undefined value => var
+Type 3: Lexical Declarations => Declaration of variable causes behavioural changes in it's scope before the line in which it's declared => let, const, class
+Type 4: Side Effects are produced before evaluating the rest of the code => import 
+// End
+
+
+Window: A global object created along with Global EC (Called window in javascript)
+this === window // true 
+console.log(window.a), console.log(a), console.log(this.a);
+
+JavaScript: Loosely Typed Language, Weakly Typed Language
+"undefined": placeholder
+Not defined => No present in memory
+
+// Official:
+    Undefined: one of javascript's primitive datatypes
+    - A Variable that has not been assigned a value is of undefined Type
+    - A method or statement returns undefined if variable being evaluated doesn't have a value
+    - A function returns undefined if nothing is returned from it
+
+    x === undefined, typeof x === "undefined", "x" in window
+
+    Null: The null value represents the intentional absence of any object value. 
+    It is one of JavaScript's primitive values and is treated as falsy for boolean operations. 
+    IMP: typeof null === "object" => This is a bug which cannot be fixed without breaking multiple scripts 
+
+    NULL vs UNDEFINED:
+    Null => Variable points to no object, lack of identification
+    null === undefined is false, null == undefined is true
+    !null = true, 1 + NULL is still a number but 1 + undefined is not a number
+
+    Primitive Datatype: 
+    Data that is not an object and has no methods or properties
+    Total 7 => string, number, bigint, boolean, undefined, symbol, null
+// end
+
+// Official doc 
+Scope: Current context of execution in which values and expressions are "visible" or can be referenced
+    - Global Scope: The default scope for all code running in script mode
+    - Module Scope: The scope for code running in module mode => (??) => <script type="module"/> not available outside of module. Deferred by default
+    - Function Scope: The scope created with a function 
+
+    - Block Scope: Scope created by a block (pair of curly braces) => let or const
+
+
+// end of official
+
+Scope, Lexical Environment. 
+
+Lexical Env: Local Memory + Lexical Env. of Parent
+"Lexical" = heirarchical = one inside another.
+Created whenever GEC is created
+
+In global execution, lexical env of parent = null;
+Scope Chain: chain of lexical environments
+
+// official doc //
+Let: re-assignable, block-scoped local variable
+    => scoped to functions as well as blocks    
+    => only be accessed after the place of declaration is reached (Temporal Dead Zone) (Regarded as non-hoisted)
+    => Cannot create properties on globalThis even when declared at the top level of a script
+    => Cannot be redeclared in the same scope
+    => Begin declarations and not statements.  
+    (if (true) let a = 1; // SyntaxError: Lexical declaration cannot appear in a single-statement context)
+
+Const: non-re-assignable, block-scoped local variables
+    rest all points, same as above
+    => initializer is required, else SyntaxError: Missing Initializer in const declaration
+    => Create immutable bindings and not values
+Temporal Dead Zone TDZ => 
+From the start of the block until code execution reaches the place where the variable is declared 
+// end of official
+
+Let, Const => Introduced in ES-6
+ARE hoisted
+But enter "Temporal Dead Zone" before assigning value. => Time between assigning memory to "a" (hoisted) and initialising it.
+ReferenceError: cannot assign a before intialization! => accessing variable in temporal dead zone
+RefereneError: x is not defined
+
+let a = 10;
+Assigned memory but not in global memory space but a seperate memory space. (Script)
+A is not attached window object. It remains in a seperate memory space.
+
+let a = 10; let a = 10;
+SyntaxError: Identifier 'a' has already been declared.
+Not the case with var.
+
+const b = 100; 
+Same hoisting as that of let.
+reassigning, b = 100;
+
+const b;
+SyntaxError: Missing initializer in const declaration;
+b=10;
+TypeError: Assignment to constant variable;
+
+------------
+Block Scope
+------------
+{ 
+    // Compound Statement
+}
+
+if(true) expects a single statement.
+If multiple statements are needed, we create a block using { };
+
+Block Scope: What all variables and functions are accessible in block
+
+let & const are hoisted in block Scope
+var is global scoped.
+
+Shadowing (??): Cast a shadow bascially, var inside the block will override var outside the block as both have same memory space. 
+But this doesn't happen for let & const as they are block scoped.
+
+Any let & const declared in blocks will be attached to block scope. Any var will be attached to global scope
+
+var a; 
+{
+    var a = 10;  => Both a are pointing to same variable
+    console.log(a); // 10
+}
+console.log(a); // 10
+
+Example 1:                                       Example  2: // Valid =>  10, 40, 10, 20
+let c = 10;                                       let d = 10;           
+{                                                   {
+        console.log(c); // Temporal Zone Error         console.log(d)        
+        {                                               {
+        let c = 40;                                         let d = 40;
+        console.log(c);                                 }
+        }                                               console.log(d)
+        let c = 20;                                  }      
+        console.log(c);                                let d = 20; 
+}                                                       console.log(d);
+c=20;                                              
+console.log(c);
+
+Execution Context: Global Scope [window], Script Scope (let & const) [1 per EC], Block Scope [Can be multiple in single EC]
+
+Closures in JavaScript:
+
+// Official Documentation
+Closure => combination of a function bundled together (enclosed) with references to it's surrounding state (lexical environment)
+        => Gives you access to an outer function's scope from an inner function.
+        => Created every time a function is created, at function creation time.
+
+Lexical Environment: (??)
+
+INTUITION: Closures parallel objects in OOP. Just like every object allows you to associate certain data, every closure has it's own data.
+// End of Official Doc
+
+Function bundled along with lexical environment = Closure.
+Created every time a function is created, at function creation time.
+
+function x() {
+    var a = 7;
+    function y() {
+        console.log(a);
+    }
+    // a = 100 will log 100. as "a" in function y is a reference to memory
+    return y;
+}
+
+var z = x();
+console.log(z);
+z(); // 7 => because of closures
+
+// When we return a function, it returns it's closure. i.e. function along with it's lexical scope
+Deeper function have a closure with each level
+
+Uses: 
+Module Design Pattern
+Currying
+Functions like once
+Memoize
+maintaining state in async World
+setTimeouts
+Iterators, etc
+
+Closure Interview Questions:
+function x() {
+    for (var i=1; i<=5; i++) {  // var is replace with let, then it will work. As let is block scoped, every iteration of for loop will create a new copy of i.
+        setTimeout(function() {
+            console.log(i); // This i is a reference, not a copy of value of i.
+        }, i * 1000);
+    }
+}
+x();
+// will print 6, 6, 6, 6, 6
+// with let, will print 1, 2, 3, 4, 5
+
+To solve question with var, wrap setTimeout with a function, to create a new closure
+function close(i) {
+    setTimeout(function () {
+        console.log(i);
+    }, i * 1000)
+}
+
+Disadvantages of Closures: 
+Overconsumption of memory
+No garbage collection till program expires
+Memory leaks
+
+----------------------
+First Class Functions: 
+----------------------
+// Official Documentation
+If functions in a language are treated like any other variable, as in passed to another function as arguement, returned by  another function and assigned as a value to a variable.
+// End of Official DOC
+
+// Function Statement
+function a() {
+    console.log("a called")
+}
+
+// Function Expression => undefined in "hoisting"
+var b = function () {
+    console.log("b called")
+}
+
+// Anonymous Function => Function without name => can be used with function expressions and not statements
+Places where functions are used values : arguements, callbacks
+function () => {
+
+}
+
+// Named function expression
+var b = function xyz() {
+
+}
+xyz(); => undefined
+
+// First Class Functions => First Class Citizens
+The ability to use functions as values, pass to function, return from function
+
+**********************
+// Callback Function:
+Passing a function as an arguement, it's upto parent function to decide when it wants to call this function
+
+If any operation blocks call stack, it's called blocking the main thread.
+
+*****************
+Event Loops:  
+*****************
+addEventListener("click", handler())
+removeEventListeners => As they are heavy because of closures
+
+Callstack => Synchronous,  Single Thread. 
+
+Call Stack => JS Engine => Browser 
+
+Web APIs:
+setTimeout
+DOM APIs => document.
+fetch()
+localstorage
+console
+location
+
+Global Object: window => gives callstack access to all browser superpowers
+
+Event Loop & Callback  (Task Queue):
+
+When time expires, call back function goes inside callback queue. 
+Event Loop => Checks if something in callback queue and pushes it to callstack
+
+Continuously monitor the callstack and callback queue
+
+Microtask Queue => higher priority than callback queue
+Promises, Mutation Observers => Microtask Queues
+While microtask queue is not empty, call back queue doesn't get priority.
+
+JavaScript Runtime Environment:
+JS Engine, APIs, Event Loop, CB Queue, MicroTask Queue
+
+ECMA Script (?)
+
+V8 (fastest) - Google Chrome, Node.js, Denom (C++) => Ignition interpretter, Turbofan optimising compiler
+Chakra - Edge 
+SpiderMonkey - Mozilla Firefox (first ever)
+
+JS Engine Architecture => 
+Code 
+Parsing => Tokens, Syntax Parser => Abstract Syntax Tree
+Compilation => JIT Compilation (Just in Time) (Inlining, Copy Elision, Inline Caching)
+(Interpretter => Line by Line execution)
+(Modern JS Engine are compiled + interpretted)
+Execution => Memory Heap, Call Stack
+
++ Garbage Collector => Mark n Sweep algorithm
+
+V8 Architecture:
+JS Source Code => Parser => AST => Ignition => Turbofan => Optimized Machine Code => Bytecode 
+Orinoco & Oliplay Garbage Collector
+
+Higher Order Functions:
+A function takes another function as an arguement or returns a function
+Functional Programming (?) 
+Prototype 
+
+* Map, Filter, Reduce
+Map: Perform transformation on every element of an array and return new array
+const newArray = oldArray.map((element) => return transformedElement);
+
+// x.toString(2) => Returns a binary string (Arguement is radix i.e. base. 16 for hexadecimal)
+
+Filter: Filter values of array based on some logic and return new array. Old array remains unchanged.
+const filteredArray = oldArray.filter(ele => return true or false);
+
+Reduce: 
+const arr = [5, 1, 3, 2, 6];
+// Requirement: Find sum of all elements;
+
+// 2 arguements: accumulator: result // sum in our case
+                 current: currentValue of array
+const output = arr.reduce(function(acc ,cur) {
+    acc += cur;
+    return sum;
+}, 0 // Initial value of accumulator) => Default value is arr[0]
+
+----------
+Callbacks
+----------
+Pros:  Run asynchronous code in javascript
+Cons: Callback hell (pyramid of doom), Inversion of Control (We give control to parent company)
+
+Promises: 
+object representing the eventual completion or failure of an asynchronous operation
+
+const user = fetch("GITHUB_API");
+//fetch returns a promise
+
+// user = promise
+Prototype: Promise
+PromiseState: "promise" / "fulfilled" / "rejected"
+PromiseResult: 
+
+user.then(res => {
+    console.log(res);
+})
+
+Promise Chaining: (return a promise from .then of one promise and then attach another .then to it)
+createOrder(cart).then(function (orderId) {
+    return proceedToPayment(orderId);
+}).then(function paymentInfo => showOrderSummary(payentInfo))
+.then(function(paymentInfo) => updateWalletBalance(paymentInfo))
+.catch(function (err) {
+
+})
+
+Creating a Promise:
+function createOrder(card) {
+    const promise = new Promise(function(resolve, reject) => {
+        if(validateCart(cart)) {
+            const err = new Error("Cart is not valid");
+            reject(err);
+        }
+        // logic for createOrder
+        const orderId = "12345";
+        if(orderId) {
+            resolve(orderId);
+        }
+    });  
+    return promise;
+}
+
+.then
+.catch // Every catch only checks all thens above it and not below. Below code proceeds as it should
+.then
+.then
+.catch 
+.finally
+
+**************
+Promise APIs:
+**************
+1. Promise.all([p1, p2, p3])
+    all fulfilled => return array of results [val1, val2, val2]
+
+    If one promise gets rejected, 
+    Promise.all will throw error from whichever promise failed first.
+
+2. Promise.allSettled([p1, p2, p3])
+    return => results of all promises, along with failures
+
+3. Promise.race([p1, p2, p3])
+    return value of the first SETTLED promise
+
+4. Promise.any([p1, p2, p3])
+    returns value of the first RESOLVED promise
+    if all fails, return = aggregated error [err1, err2, err3] (err.errors)
+
+**************
+ Async Await
+**************
+
+Async: Keyword used to create an async function
+1. Return a Promise
+2. If a value is returned, wrap value with Promise and return that
+
+
+const p = new Promise((resolve, reject) => {
+    resolve("Promise Resolved Value!!");
+})
+
+Before Async Await
+-------------------
+
+function getData() {
+    p.then((res) => console.log(res));
+}
+getData();
+
+After Async Await
+-----------------
+async function getData() {
+    res = await p;
+    console.log(res);
+}
+
+Await: Keyword that can only be used inside an async function
+
+When await is encountered, function execution is suspended
+After p1 resolved, handlePromise will again come in call stack, start executing from where it left
+Encounter await p2, suspend again for 5 more seconds
+Come back in call stack and log p2
+
+Checkout => Multiple await in single async function?
+What if second await depends on result of first async function?
+
+Async-Await is just a syntactic sugar over native promise handling
+
+*************
+this keyword
+*************
+// strict-mode "use strict"
+// non-strict mode
+
+// this in global space (globalObject) => Javascript runtime environment
+this => Window object in Browser
+
+// this inside a function
+this => strict-mode => undefined
+this => unstrict-mode => Window 
+
+// Also depends on how the function is called (with strict mode ofcourse)
+x(); => undefined
+window.x() => window
+
+this substitution => 
+If the value of this is undefined or null, 
+this will be replace with globalObject. (only in non-strict mode)
+
+// inside a object's method
+
+function xyz() {
+  console.log(this.a);
+}
+const obj = {
+  a: 10,
+  x: xyz,
+};
+
+xyz(); => undefined
+obj.x(); => 10
+
+// call, apply, bind (sharing methods);
+Call => student.printName.call(student2);
+        Provide a value for "this" 
+
+******
+ CALL
+******
+The call() method of Function instances calls this function with a given 
+this value and arguments provided individually.
+
+// syntax => function.call(thisArg, arg1, arg2, arg3);
+    If thisArgs is null or undefined, in non-strict mode, it will be replaced by globalThis
+
+// Result => Calling of the function with this as given this. Rest are arguements required by the function
+
+//  const person = {
+  name: "Atharva",
+  age: 21,
+};
+
+const printIntro = function(age) {
+    console.log(this.name, age);
+}
+
+printIntro(24); // undefined, 24
+printIntro.call(person, 24); // Atharva, 24
+
+*******
+ Apply
+*******
+The apply() method of Function instances calls this function 
+with a given this value, and arguments provided as an array (or an array-like object).
+
+// syntax => function.call(thisArg, argsArray => array-like object);
+    If thisArgs is null or undefined, in non-strict mode, it will be replaced by globalThis
+
+const array = ["a", "b"];
+const elements = [0, 1, 2];
+array.push.apply(array, elements) === array.push(...elements);
+
+fn.apply(null, args) === fn(...args)
+... is a modern and preferred way to pass an array of arguements
+
+Cons: arguements length is capped at 65546
+
+*******
+ Bind
+*******
+The bind() method of Function instances creates a new function that, 
+when called, calls this function with its this keyword set to the
+provided value, and a given sequence of arguments preceding any provided when the new function is called.
+
+// syntax => bind(thisArg, arg1)
+          => It will return a function, which when executed, will get executed with this context passed
+
+=============
+This pointer:
+=============
+// inside an arrow function
+Don't provide their own this binding 
+Retains this value of enclosing lexical context
+
+// in DOM
+this => value is a reference to HTML element it self
+
+Constructor Function in JavaScript
+**********************************
+function Product(name, price) {
+  this.name = name;
+  this.price = price;
+}
+
+const obj = new Product('soap', 45);
+// obj.name = soap; obj.price = 45
+
+constructor function in JS:
+1. Conventionally name with a capital letter
+2. this keyword is used inside it => "this" refers to the object that will
+    be returned by this function when called with keyword "new"
+3. Intended to be called with new
+
+Note: When it's called without new, it will beahve like a normal function. No new object will be created and nothing will be returned.
+If something is returned within a constructor function,
+a. primitive data type is returned => ignored
+b. object is returned => This object replaces instanceof(Class) => no longer an instance
+
+classes in JS are syntactic sugar over normal prototypal inheritance in JS
+class Product {
+  constructor(name, price) {
+    this.name = name;
+    this.price = price;
+  }
+}
+
+*******************
+JavaScript Proxies
+*******************
+Proxy object enablees you to create a proxy for another object (or function)
+Intercept and redefine fundamental operations for that object => getting, setting, defining properties
+
+Usage: Log property accesses, validate, formate or sanitize inputs
+
+Syntax: const proxy1 = new Proxy(target, handler);
+// target => regular object
+// handler => { get(target, prop, receiver):{}, set(): { something}, }
+
+In Vue => Proxy forms backbone of it's reactivity system
+
+**********
+.mjs file 
+**********
+ES6 - ECMAScript 2015
+module JavaScript -> Explicitly indicate that the file should be treated as an ES6 module
+Features: 1. import and export statements to handle module imports and exports
+        2. Strict Mode 
+        3. Module scoped variables
+        4. Top-level this is undefined (because of strict mode)
+        

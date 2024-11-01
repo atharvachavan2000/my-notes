@@ -1,0 +1,94 @@
+Introduction:
+=============
+Hi, I'm Atharva Chavan. I completed my Bachelor's in Computer Engineering from PICT, Pune in July 2022.
+I started my career at Robin.io, which was acquired by Rakuten Symphony during my onboarding process. 
+Currently, Robin.io forms the backbone of the Cloud Business Unit at Rakuten Symphony.
+I am part of the GUI team, responsible for the user interface of all products within the Cloud BU.
+My primary expertise is in Vue.js (both Vue 2 and Vue 3), but I also have a good hands on with PHP and ReactJS.
+Outside of work, I enjoy watching esports, playing badminton, going on treks, and exploring Google Maps.
+
+
+*********** Tell me something about your current project:
+
+CNP is a K8S-based platform that automates the deployment, scaling and lifecycle management of data and network intensive applications.
+It's written in PHP7 and CodeIgniter. So, I'm currently overlooking the migration of this platform in it's entirely to Vue3 SPA.
+
+Currently, I am responsible for overseeing the migrations of this platform into a Vue3 application written from scratch.
+Reasons for doing this? Large Cluster Slowness, Huge time to add New Features, Maintainence.
+
+How do we do this? 
+We have analyzed the entire application and created a spreadsheet comparing time in slow cluster and large cluster. 
+We choose a page based on the data available and customer requirements.
+Analyze the entire page => what all it needs, API calls.
+Redesign it if necessary and reduce complexity.
+Write unit test and inform the QA that it's done.
+
+
+Questions to ask him:
+1. How would my first 6 months look like at Zepto?
+2. What are the projects are going on?
+
+1. Research the company … show them you understand what they do
+2. Read the job description 
+5. Be a team player … shares the credit 
+
+Resume Questions
+================
+
+Prioritizing Work: Deadline, Breakdown Task, Tools (JIRA), Time Management, Flexibility => Sticky
+17 Seconds to 250 ms: 1. Eliminating PHP server and massaging of data.
+                      2. Optimizing Code =? tenant namespace O(n^2) to O(n) using a dict
+Vitest: Vitest is a modern testing framework for JavaScript and TypeScript applications, designed to be fast and easy to use. 
+It is particularly well-suited for projects using Vite, 
+as it integrates seamlessly with the Vite build tool, providing a smooth development experience.
+
+
+Performance & scalabiliy of frontend:
+Code Splitting (lazy loading/ dynamic imports), optimized assets, caching, state Management, responsive design
+
+Best frontend practices:
+Component-based architecture, consistent coding standards (eslint, prettier), version control, testing, accessibility, documentation, security
+
+Common Performance Issues:
+Large Bundle Size: Code Splitting, Tree Shaking, Minification
+Slow Rendering: Avoid unnecessary re-renders, using efficient algorithms
+Memory Leaks: Cleaning up event listeners and DOM elements,
+Network Latency: Use lazy loading, Caching and CDNs
+Blocking JavaScript
+
+Tree Shaking : process of eliminating dead code from a bundle => reduce the size of the final bundle by removing code that is 
+not actually used in the application, thereby improving load times and overall performance
+
+React vs Vue Answer:
+====================
+Cons of React vs Vue: 
+1. Steeper Learning Curve
+2. Too much boilerplate code
+3. Flexibility => inconsistencies and lack of standardization
+4. Huge Ecosystem but it's fragmented
+5. JSX is less intuitive that vue directives
+6. Coporate interest 
+7. Fine-grained control over component updates and rendering => manual optimization and deeper understanding of react internals
+
+Pros of React vs Vue:
+1. Library rather than framework => Which lends it Flexibility
+2. Rich Ecosystem, Large Community, Corporate Backing
+3. Virtual DOM & Fine Grained control
+4. React Native advantage in ecosystem => React 360 as well for Virtual
+5. Adoption and widespread enterprise use
+6. Next is not really comparable to Nuxt if SSR application is required
+
+
+
+
+Amazon Leadership Principles:
+=============================
+Customer Obsession, Ownership, Invent and Simplify, Are Right, A Lot, Learn and Be Curious
+Hire and Devlop the Best, Insist on the Highest Standards, Think Big, Bias for Action, Frugality
+Earn Trust, Dive Deep, Have Backbone Disagree and Commit, Deliver Results, Strive to be Earth's Best Employer
+Success and Scale Bring Broad Responsibility 
+
+
+scrollContainer.clientHeight + scrollContainer.scrollTop >= scrollContainer.scrollHeight - 100
+window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100
+

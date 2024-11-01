@@ -1,0 +1,85 @@
+chrome.exe --disable-web-security --user-data-dir="C:/ChromeDevSession"
+
+npm install -D eslint eslint-plugin-vue --force
+npm install husky lint-staged --save --force
+npm install prettier --save --force
+
+Read this: https://vuejs.org/style-guide/
+
+Two Categories:
+Formatting -> max-len, indentation, quotes, trailing commas, semi-colon, spacing around functions and brackets
+Code-Quality -> No-unused-vars, no-use-before-define, no-dupe-args, no-unreachable, eqeqeq, no-unused-expressions
+
+Linting: Process of running a program that will analyze code for potential errors. The term "Linting" comes from the name of original tool of this type, "lint" for C language.
+
+Pros: Consistent Code, Early Error Catching, Code Quality Improvement, Learning.
+Cons: Setup Time, False Positive, Slowing Down Development, Over-reliance, Annoying
+
+************************
+		ES-Lint
+************************
+
+ESLint focuses on JavaScript and ECMAScript syntax issues.
+ECMA Script: It's a standard and JavaScript is the most popular implementation of that standard.
+It's latest version is (ES6, ES7) => European Computer Manufacturers Association
+
+=> Disabling ES-Lint
+ 1. // eslint-disable-next-line
+ 2. For a block of code,
+ 		/* eslint-disable */
+		/* eslint-enable */
+
+=> Showing Compiler Errors in Browser:
+
+	To show compiler error in browser =>
+	npm install vite-plugin-eslint --save-dev
+
+	In vite.config.json file, import eslintPlugin and add it to defineConfig.
+	
+	export default defineConfig({
+  		plugins: [eslintPlugin()],
+	});
+
+************************
+		Prettier
+************************
+In VS-Code, 
+Install "Prettier - Code Formatter"
+In settings.json, choose format on save => Default Formatter > Prettier
+ *** npm install && npm run prepare for initialising husky. 
+	Note: Check if this step is required for all developers
+
+In order to run prettier compulsory, 
+1. Editor Integration
+2. Version-Control Hooks (Husky for Pre-Commit Hooks, Lint-Staged to run linter on all staged files)
+3. CI-CD Pipeline
+4. Developer Documentation and Training, Code-Reviews
+
+Prettier only writes your code in a better and readable way. It does not change it's meaning. 
+Options are present however the prettier team doesn't recommend using too many of them as it defeats the purpose of prettier.
+For eg, trailing-comma, html-whitespace-sensitivity.
+
+
+=> Automating Prettier: 
+	1. Lint-Staged: 
+		This is basically a tool which will run small shell-scripts (Linting, Formatting) on files
+		that are staged so that none of the extra stuff makes it to github.
+	2. Husky:
+		Used for running code pre/post git commits/push/add. Uses hooks to run scripts which we want. 
+
+
+************************
+		Misc.
+************************
+
+ESLint Alternatives: JSLint, TSLint, SonarQube, StandardJS
+Prettier Alternatives: Beautify, EditorConfig, ClangFormat.
+
+References: 
+Vite Documentation => https://vitejs.dev/guide/
+ESLint Documentation => https://eslint.org/docs/latest/use/getting-started
+Prettier Documentation => https://prettier.io/docs/en/
+ESLint Configuration => https://eslint.org/docs/latest/use/configure/
+Rules => https://eslint.vuejs.org/rules/#priority-a-essential-error-prevention
+LintStaged => https://github.com/lint-staged/lint-staged 
+Husky => https://typicode.github.io/husky/

@@ -1,0 +1,257 @@
+TODO: Convert major life-cycle methods to useEffect and explain =? Classic vs Function
+
+
+useState Hook: 
+==============
+What? => Hook that allows functional components to manage state by declaring state and providing a function to update them.
+        It return an array of size 2 => state, setState and accepts one parameter => initialState
+
+        setState accepts both, just a value as well as a callback => (prev) => return new;
+
+        Two way data binding? Allows synchronization of data between model and view component
+        How can you achieve it in react? => value, onChange 
+
+
+useEffect Hook (P):  (Asynchronous, runs after the render cycle is committed to the screen)
+==================
+What => Hook that allows you to run code to perform side-effects after rendering, such as data fetching, subscriptions or manual DOM manipulations
+        1. callback function (return a cleanup function) => clean up function runs on unmounting or beforeUpdate
+            - cleanup function is used to cleanup subscriptions, intervals and timeouts
+        2. dependencies array => empty => run once
+                              => value => value changes => runs
+                              => missing => runs on every render  
+    
+
+useLayoutEffect Hook => (Synchronous, runs immediately after the DOM is updated but before the browser paints anything on the screen)
+====================
+What => exact same syntax but runs before the component is rendered.
+        it can block the render cycle
+
+Usage => Interact with DOM and change something before it's painted => used by third-party styling libraries
+
+
+useRef
+=======
+What => Hook used to create a mutable reference that persists across renders
+        It returns a mutable object with a ".current" property
+
+        Updating a ref does not cause a re-render
+
+Usage => Accessing DOM elements or managing focus
+         Storing mutable values that persist without causing re-renders
+         Caching values to avoid re-initialization on re-renders
+
+useContext
+==========
+What => used to consume values from a contet created by createContext();
+        It allows functional components to access context values without prop drilling
+
+Can create multiple contexts in the same component
+
+const MyContext = createContext(initialState);
+
+<MyContext.Provider value={initialState}>
+    <App/>
+</MyContext.Provider>
+
+
+const intitialState = useContext(MyContext);
+
+useReducer 
+===========
+What => Hoot used for managing complex state logic by utilizing a reducer function
+        Alternative to useState and provides a way to update state based on defined actions
+
+const reducerFunc = (state, action) => {
+    switch(action.type) {
+        case : 
+            return updatedState;
+    }
+}
+
+const [state, dispatch] = useReducer(reducerFunc, initialState)
+
+When => Manage complex state transitions or logic that involves multiple subValues
+        When state logic follows a pattern or when multiple actions need to update the state in predictable ways
+
+        useContext + useReducer
+
+
+useMemo (P):
+============
+What => Hook used to memoize the result of a function and cache it, 
+        recalculates it only if the dependencies change
+
+useMemo(() => {
+    console.log("some loooong calculation")
+    return value;                           => remember the value for every counter passed to it
+}, [counter])
+     
+Doesn't return a function => it returns a value
+It memoizes a computed value and caches it without causing a re-render
+
+useCallback() => Hook returns a memoized function
+=============
+
+In useMemo, a new function is created and run everytime the dependencies array changes.
+In useCallback, just the function is memoized and called whenever dependency array changes
+
+if dependency array is missing => behaves like just a normal function
+
+useMemo => 
+USECASE: Just like computed properties in VueJS => It should re-render only when dependency array changes
+         and not every time.
+
+When not to use?
+- Event handlers or inline Functions
+- Excessive Memory Consumption
+
+
+useImperativeHandle() => let's parent component call method of child component
+=====================
+
+
+CUSTOM HOOKS: Any function that starts with use___ becomes a custom hook. 
+              It can then only be used at the top level in a component.
+              It allows usage of other hooks inside of it
+
+
+useQuery => TanStack React Query
+useQuery is a hook provided by libraries like React Query (now known as TanStack Query) that allows you to fetch, cache, and update data in your React applications.
+It simplifies data fetching and state management by providing a declarative API to handle asynchronous operations.
+
+Simplies API calls, caching, retires and deduping 
+
+SWR => Alternative to React Query
+SWR: Focuses on simplicity and the "Stale-While-Revalidate" strategy. It is designed to be lightweight and easy to use. Developed by Vercel.
+It serves stale data and revalidates it in the background
+
+
+/// Official: Error Boundaries //// 
+Introduced by React-16
+What => React components that catch Javascript error anywhere in their child component tree, log those errors and display a fallback UI.
+Where => Errors in rendering, lifecycle methods and in constructors of whole tree below them.
+Where NOT => Event handlers, Async Code, SSR, In itself
+
+How => 
+Class Component => use either or both => static getDerivedStateFromError(error) or componentDidCatch(error, errorInfo); 
+Work like JavaScript catch {} blocks => 
+    try {} catch {} for imperative code
+    ErrorBoundary for declarative code
+
+Before React16 => unstable_handleError
+
+/// End of Error Boundaries
+
+
+/// Official Code Splitting Documentation ////
+1. Bundling => Process of following imported files and merging them into a single file => "Bundle"
+               Bundle is then included on a webpage to load an entire app at once.
+    Tools: Webpack (Creat-React-App, Next.js, Gatsby), Rollup (Used by Vite), Browserify
+
+2. Code Splitting => To avoid have one giant bundle, it's a feature which can create multiple bundles that can be dynamically loaded at runtime.
+
+    How to introduce code-splitting?
+        1. import() => Dynamic imports => Feature of JavaScript
+            Syntax: import(module, options).then().catch() or await import(module, options);
+        2. React.lazy => Let's you render a dynamic import as a regular component
+            Syntax: const LazyComponent = React.lazy(() => import("./LazyComponent"));
+
+            Always render lazy component inside a <Suspense/> component => Show fallback content while we're waiting for lazy component to load
+        3. Route-based => <Route path="/" element={<LazyComponent/>} 
+            <Router><Suspense><Routes><Route/>/>/>
+
+        Note: React.lazy only supports default exports. If name module is to be lazily loaded, create an intermediate module that 
+              import this named export as default and export it. => export { NamedCopmonent as default } from "./Somewhere"
+    
+/// End of Official ////
+Code splitting is a technique used to break down a large JavaScript bundle into smaller, more manageable pieces. 
+This allows the application to load only the necessary code for the current page or feature,
+ rather than loading the entire application at once. Code splitting can be done at various levels, such as by route, by component, or by library.
+
+
+Chunking refers to the process of splitting the code into chunks, which are the smaller pieces of code generated by the code splitting process. 
+
+Code Splitting: The concept of breaking down the code into smaller pieces.
+Chunking: The actual implementation of code splitting, resulting in smaller files (chunks).
+
+Webpack is a popular module bundler for JavaScript applications. It takes your code and all its dependencies and bundles them into one or more files, usually for use in a web browser.
+
+Module Bundler: Webpack processes your code and its dependencies, such as JavaScript, CSS, images, and more, and combines them into a single or multiple bundles.
+Loaders: Webpack uses loaders to transform files. For example, you can use a loader to convert SCSS to CSS or to transpile modern JavaScript (ES6+) to a version that older browsers can understand.
+Plugins: Webpack plugins extend its functionality. For example, you can use plugins to optimize your bundles, manage environment variables, or perform other tasks during the build process.
+
+Babel is a JavaScript compiler that allows you to use next-generation JavaScript (ES6/ES7/ES8, etc.) today. It transpiles your modern JavaScript code into a version that can run in older browsers.
+
+Transpiler: Babel converts modern JavaScript syntax and features into a form that is compatible with older environments.
+Plugins and Presets: Babel uses plugins and presets to determine how to transform your code. For example, the @babel/preset-env preset allows you to use the latest JavaScript features.
+
+Vite: Dev Server, ES Modules, Bundler (Rollup)
+
+Lazy Loading: A technique to load components only when they are needed, improving the initial load time of the application. Achieved using React.lazy and Suspense.
+Error Boundaries: Components that catch JavaScript errors in their child component tree, log those errors, and display a fallback UI instead of crashing the whole application. Created using componentDidCatch or getDerivedStateFromError.
+Suspense: A component that allows you to wait for some code to load and specify a loading state while waiting. Often used with React.lazy for lazy loading components.
+
+const LazyComponent = lazy(() => import('./LazyComponent'));
+
+<Suspense fallback={<div>Loading...</div>}>
+    <LazyComponent />
+</Suspense>
+
+Virtualization - A way to effectively render a very huge list of data
+==============
+
+Implementing on our own ? => Intersection Observer API
+Library => react-window
+
+If 4 are visible on window, render 2 + 4 + 2 only
+It calculates which items should be visible initially => listens to scroll event
+
+
+In Image Grid, there are two options =>
+1. Lazy Loading =>
+- Delays loading of resources until they are required (come into viewport)
+- Particularly usefull for images, videos and other media content
+- How? IntersectionObserver API to detect when an image is about to enter the viewport
+- Implementation = Modift indivial components to load lazily
+- Reduces initial load time and bandwidth Usage
+- Best for => Media-heavy pages, infinite scrolling
+- react-intersection-observer, native IntersectionObserver
+- ** Loading ** Refers to the process of fetching resources from a server or other sources
+
+2. Virtualization => 
+- Optimizes rendereing by only rendering items that are visible in the view port
+- Usefull for lists, tables and grids with large number of items
+- How? Virtualized List Component => Calculates which items should be visible
+       - When scrolled, it recalculates which to unmount and mount based on visibility
+- Implementation - Restructure list components to use virtualized list
+- Reduces no. of DOM nodes and improves rendering
+- Large Datasets, Long lists, complex tables
+- react-window, react-virtualized
+
+
+React Window: 
+Virtualization => Only visible items and small buffer is rendered => Reduced DOM nodes
+Customizable => Customize the rendering of items and the layout of the list
+lightweight => Small-footprint
+
+Intersection Observer API: 
+==========================
+Way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's viewport.
+Why? 1. Lazy loading 2. Infinite Scrolling 3. Advertisement Visiblity for revenue 4. Animation Performance
+Earlier, only main thread was used. Now, we can register a callback.
+What it can't do? Calculate exact number or position of pixels that are overlapping
+
+Intersection changes with => target elements' nearest scrollable ancestor.
+                          => If not, viewport
+
+const observer = new IntersectionObserver((entries, observer) => {
+    // 1 entry = 1 target element => isIntersecting, intersectionRatio, target, time
+}, options);
+=> call back is executed on the main thread => it should be lightweight
+
+//// Official HOC ////
+Higher Order Components: 
+    
+
+//// End of HOC ////

@@ -1,0 +1,660 @@
+Composition API FAQ? https://vuejs.org/guide/extras/composition-api-faq.html
+nextTick.. what is component lifecycle in Vue
+deepWrapping ShallowWrapping?
+check Vue Lifecycle in detail
+
+tsconfig?? 
+compile time macro
+async components -> Didn't understanding
+
+Read: https://vuejs.org/guide/typescript/overview
+Todo: TypeScript Tutorial
+
+ref internal working?
+rendering techniques in frontend => ssg, ssr, isr, csr.
+
+***************
+Vue 3 vs Vue 2
+***************
+Vue 2 only had Options API.
+
+Vue3 New Additions:
+ - Composition API
+ - SFC API Syntax Sugar (<script setup>)
+ - Teleport
+ - Fragments
+ - Emits Component Option
+ - createRenderer
+ - v-bind in <style>
+ - <style scoped> 
+
+ ***************************
+  Default Recommended Tools
+ ***************************
+ Router, Devtools and Test Utils => Vue3
+ Build Toolchain => Vue CLI -> Vite
+ State Management => Vuex -> Pinia
+ IDE Support => Vetur -> Volar
+ TypeScript Support for CLI -> vue-tsc
+ SSG => VuePress -> VitePress
+ JSX => @vue/babel-preset-jsx -> @vue/babel-plugin-jsx
+
+
+****************************************
+    Vue Options API vs Composition API
+****************************************
+
+Vue components have two different API styles.
+
+In Options API => 
+
+export default {
+    // Properties returned become reactive state and are exposed on this.
+    data() {
+        return {}
+    },
+    // Functions to mutate state and trigger updates
+    methods: {
+
+    },
+    // Lifecycle Hook
+    mounted() {
+
+    }
+}
+
+In Composition API =>
+The logic is defined using imported API Functions. 
+
+<script setup> ===> setup means Vue perform compile-time transforms that allow us to use Composition API with less boilerplate.
+For eg, variable declared in script setup are directly usable in template. 
+
+import { ref, onMounted } from 'Vue';
+
+function increment() {
+
+}
+
+const count = ref{0};
+onMounted(() => {
+    console.log("This is the mounted lifecycle hook");
+})
+// Watchers
+watch(
+  () => props.showDialog,
+  (newVal) => {
+    openDialog.value = newVal;
+  }
+);
+// Computed Properties
+const formComponent = computed(() => MapItemToForm[props.item]);
+
+
+
+1. Options API is implemented on top of Composition API
+2. Options API is centered around "Component Instance" (this) => class-based kind of. Beginner-friendly, abstracts reactivity details, enforces code organization.
+3. Composition API centered around "Declaring Reactive State Variables directly in a function scope and composing state from multiple functions together to handle complexity".
+ Free-form, understanding of reactivity is required. 
+
+ Usage: OptionsAPI for progressive switch to Vue and not using build tools.
+        Composition API for building full-fledged Vue applications.
+4. We can group together logical concerns in composition API where as in options API, the logic was spread across all over the page.
+
+=> Defining Props in Composition API:
+1. Runtime Declaration: arguments passed will be used as runtime prop option.
+
+    const props = defineProps({
+        title: String,
+        likes: Number
+    })
+
+2. Type-based Declaration: 
+    Typescript with <script setup> => pure type annotations:
+        defineProps<{
+            title?: string
+            likes?: number
+        }>()    
+
+        However, this doesn't allow the use of default values. For that. we can use "withDefaults" compiler macro.
+        export interface Props {
+            value?: type
+        }
+        const props = withDefaults(defineProps<Props>(), {
+            default: Value
+        })
+
+=> Defining Emit in "script setup"
+const emit = defineEmits(['closeDialog']);
+
+=> In Vue3, by default, the data and methods of children are not available to the parent component. You need to expose them. 
+defineExpose({ form });
+
+
+Comparison of React Hooks with Composition API: 
+https://vuejs.org/guide/extras/composition-api-faq.html#comparison-with-react-hooks
+
+
+*****************
+    Vue.js
+*****************   
+Core Features:
+1. Declarative Rendering: 
+    Extend standard HTML with a template syntax that allows us to declaratively describe HTML output based on JavaScript state.
+2. Reactivity: 
+    Automatically tracks JavaScript state changes and efficiently updates the DOM when changes happen.
+3. SFCs
+
+Usecases: 
+- Enhancing static HTML without a build step
+- Embedding as Web Components on any page
+- Single-Page Application (SPA)
+- Fullstack / Server-Side Rendering (SSR)
+- Jamstack / Static Site Generation (SSG)
+- Targeting desktop, mobile, WebGL, and even the terminal
+
+=> Single-File Components (SFCs)
+ *.vue files
+
+**************
+  Essentials
+**************
+
+ 1. Application Instance:
+    import App from './App.vue'
+    const app = createApp(App); 
+    app.mount('#app')
+
+    In Depth:
+    # createApp(rootComponent, rootProps) => Creates an application instance
+    # createSSRApp() => app instance in SSR hydration mode (?)
+    # app.mount(Element | string) => actual DOM element, CSS selector. one mount per app instance. 
+    # app.unmonunt() => Triggers unmount lifecycle hook for all components
+    # app.component('component-name', Component) => Either registers or retrieves based on number of arguements. 
+    # app.directive('my-directive', () => { /* custom directive hooks */})
+    # app.use(plugin, options?: []). Plugin => object with install() option, function that will be used as the install() method.
+    # app.provide("injection key", "injection value")
+    # app.runWithContext() ==> ??
+    # app.version => returns Vue version
+    # app.config => 
+        .errorHandler(err: unknown, instance: ComponentInstance, info: string)
+        .warnHandler(msg: string, instance: ComponentInstance, trace: string)
+        .performance => set true to enable init, compile, render, patch performance tracing in browser. (Dev mode && performance.mark(??) API browsers)
+        .compilerOptions => isCustomElement, whitespace, delimiters, comments
+        .globalProperties => Replacement of Vue.prototype
+        .optionMergeStrategies (??)
+
+    Global API: 
+    # import { version } from 'vue'
+    # nextTick() => 
+        After mutating reactive state in Vue, changes are buffered until the "next tick", to ensure each component updates only once, no matter number of state changes.
+        await nextTick() => will wait for DOM updates.
+    # defineComponent(??) => a type helper for defining a Vue component with type inference.
+    # defineAsyncComponent(??)
+    # defineCustomElement(??)
+
+2. Template Syntax
+    Declaratively bind the rendered DOM to the underlying compoent instance's data.
+    Text Interpolation => Moustache syntax => <span>{{ msg }}</span>
+
+    Directives: "v-*" Special attributes provided by vue.
+    
+    v-html for rawHtml
+    v-bind for binding data (: shorthand)
+    v-for => v-for="(item, index) in items" or (value, key, index) in object, :key
+    v-on => v-on:click (@click shorthand)
+    v-slot
+    v-if, v-else-if, v-else => removes the element entirely from the DOM. Higher toggle cost.
+    v-show => only toggles the display property of css. Higher initial render cost.
+    v-model => combines :value and @input.. .lazy, .number, .trim
+
+    Modifiers: special postfixes denoted by a "." @submit.prevent => event.preventDefault()
+    => Full Directive Syntax
+        v-on:submit.prevent="onSubmit"
+        Name:Argument.Modifier=Value
+
+3. Reactivity fundamentals
+    ref() => declare reactive state.
+    Ref takes an argument and returns it wrapped within a ref object with ".value" property.
+    const count = ref(0)
+    <span>{{ count.value }}</span> => .value is not required in template but only required in the script. 
+
+    The following is without using <script setup>. It's very verbose. All this code can be avoided using <script setup> in SFCs. All top-level imports, variables, functions are automatically usable in template.
+
+    export default {
+    setup() {
+        const count = ref(0) => {value: 0}
+
+        function increment() {
+        // .value is needed in JavaScript
+        count.value++
+        }
+
+        // don't forget to expose the function as well.
+        return {
+        count,
+        increment
+        }
+    }
+    }
+
+    *** UNDER THE HOOD => Why is ref made an object?
+    Dependency-tracking based reactivity system. 
+    Component rendered for first time => Vue tracks every ref that was used during the render. 
+    When ref is mutated, trigger a re-render for components that are tracking it. 
+
+    In JS, no way to detect the access or mutation of plain variables. But for objects, get and set operations can be intercepted using getter and setter.
+
+    Refs are deep by default. Shallow Refs should be used which only track access for .value property => Avoids observation cost of large objects.
+        const state = shallowRef({ count: 1 })
+
+        // does NOT trigger change
+        state.value.count = 2
+
+        // does trigger change
+        state.value = { count: 2 }
+
+    to wait for DOM update after a particular state change, use "await nextTick();" as DOM updates are asynchronous.
+
+    reactive() => another way to declare reactive state.
+    ref wraps inner-value in special object.
+    reactive makes an object itself reactive => These are JavaScript Proxies.
+
+    returned value from reactive is a Proxy of the original object and not equal to the original object.
+    ref() internally calls reactive() when an object is passed to reactive();
+    shallowReactive() is also available
+
+    LIMITATIONS: Limited value types, cannot replace entire object, not destructure-friendly.
+    Recommended to use ref() instead.
+
+    reactive() has very less overhead. So if your object doesn't need reassigning, use reactive() for quicker code. 
+    ref() anyway calls reactive() behind the scenes when an object is passed to it.
+
+    const blogPosts = ref([]); ===> this.blogPosts.value = await fetchBlogPosts();
+    const blog = reactive({ posts: [] }); ===> this.blog.posts = await fetchBlogPosts();
+
+    Reactivity API: Utility functions: 
+    # isRef() => checks if value is ref object;
+    # unref() => isRef(val) ? val.value : val;
+    # toRef() => normalize values / refs / getters into refs.
+    # toValue() => normalize values / refs / getters into values. (Similar to unref() except also getters)
+    # toRefs() => Converts each key of reactive object to a ref. => useful for destructuring
+    # isProxy() => Check if proxy => reactive(), readonly(), shallowReactive(), shallowReadonly()
+    # isReactive() => Check if proxy => reactive() or shallowReactive() 
+    # isReadonly() => Check if proxy => readonly() or shallowReadOnly()
+    
+    # triggerRef() => Trigger effect forcefully for shallowRef
+    # toRaw() => Get original object instead of proxy
+    # markRaw() => Never converted to proxy. Stays shallow and original object is returned
+
+4. Computed Properties.
+    const publishedBooksMessage = computed(() => {
+    return author.books.length > 0 ? 'Yes' : 'No'
+    })
+
+    Computed function expects "getter" function and returned value is a computed ref.
+    Automatically tracks it's reactive dependecies. 
+
+    Computed vs Methods => Computed properties are cached and will never get called on every re-render.
+    computed are default getter-only. However in rare cases,
+    computed({
+        get() {}, set(newValue) {}
+    })
+
+    Side-Effect Free, Avoid Mutating Computed Values.
+
+5. Lifecycle Hooks
+    RENDERER  => setup (composition API) => beforeCreate => INIT OPTIONS API => created => HAS PRE_COMPILED TEMPLATE? => COMPILE TEMPLATE => beforeMount
+    => INITIAL RENDER CREATE and INSERT DOM => mounted => MOUNTED => beforeUpdate => RERENDER AND PATCH => updated => MOUNTED => beforeUnmonut => unMounted => UNMOUNTED
+
+    onMounted():
+    ------------
+    Conditions: 1. All sync child components have been mounted.
+                2. it's own DOM tree is created and inserted in parent container. 
+
+    Usage: Performing side effects that need access to the component's rendered DOM tree.
+    Not Called: in SSR.
+
+    onUpdated(): 
+    ------------
+    Conditions: 1. Called after DOM updates caused by any / multiple state changes.
+                2. After all of child component's updated hook is called.
+    Usage: If updated DOM is needed only for a specific state change, prefer using nextTick() as a single DOM update can have multiple state changes.
+    Not Called: in SSR.
+
+    onUnmounted():
+    --------------
+    Conditions: 1. All of it's child components are unmounted.
+                2. All reactive effects, computed, watchers have een stopped
+    Usage: Manual cleanup of timers, DOM event listeners or server connections.
+    Not Called: in SSR.
+
+6. Watchers
+    As Computed variables are side-effect free, watchers allow us to perform "side-effects" in reaction to state changes.
+    watch(x, (newX) => {
+        console.log(`x is ${newX}`)
+    }, {
+        deep: true, immediate: false, once: false
+    })
+
+    Can watch a single ref or multiple refs or reactive properties. 
+
+7. ref: special attribute which allows us to obtain direct reference to a specific DOM element or child component instance after it's mounted.
+    In OptionsAPI => this.$refs.input;
+    In CompositionAPI => const input = ref(null);
+
+    When used on a child component, ref will be of component instance.
+    For Options API and Composition API (without script setup), referenced instance === child component's "this".
+    For Composition API and script setup, everything is private by default. To use in parent, expose the property using the "defineExpose" to the public interface.
+
+    Note: Compiler macros need not be imported from "vue"
+
+    In Vue2 => $refs => object on the Vue instance that can be used to access child components or DOM elements that are assigned a ref attribute in template. 
+    Used for => Direct child manipulation or accessing values from child component.
+    Are non-reactive (Changes are not watched) and populated after the component has been rendered. 
+
+    In Vue3 => A function used to create reactive and mutable reference to a value.
+    However, it can emulate the behaviour of $refs if used like: const myDiv = ref(null), <div ref="myDiv"/>
+
+
+*******************
+ Components Basics
+*******************
+- new instance of every component used which is used to encapsulate it's own state and logical
+- recommended to use "PascalCase" component names to differentiate from native html components
+- Passing props => custom attributes you can register on a component.
+        const props = defineProps['prop1', 'prop2']; => Compile-time macro    
+- Emit an event from child and tell parent to do something.
+    built-in $emit methods.
+    or const emit = defineEmits(['emit1']); => returns an emit function equivaluent to "$emit"
+
+- Dynamic Components: v-is directive. <component :is="dynamicComponent"/> where dynamicComponent = name string of registered component, actual imported component object
+  (When switching, component will be unmounted.)
+
+
+# Registering Components: 
+    1. Global: app.component(ComponentName, Component);
+    <ComponentName/> can now be directly used anywhere inside.
+
+        Drawbacks: - prevents build system from removing unused component ("tree-shaking").
+                - Less explicit dependency relationships. Difficult to locate child component's implementation from parent component using it. 
+
+
+    2. Local: scopes availability to current component only. More tree-shaking friendly.
+    in <script setup> => imported components are directly used locally without registration.
+    in non-script, component: { componentName }
+
+# Props
+    Prop declaration tells Vue what external props passed to components => treated as fallthrough attributes
+    in <script setup>: const props = defineProps(['propName']); or defineProps({propKey: propValue}) => value = constructor function of the expected type
+    in <script setup> ts : defineProps<{title?: string, likes?: number}> "pure TypeScript annotations"
+        It is compiled to => '{ title: { type: String, required: true }}'
+    in non-script: props: ['propName']; => setup(props)
+
+    "camelCase" in declaration, "kebab-case" while passing
+
+    Mutating props: Props should be read-only. Cases where it's tempting to mutate a prop:
+    1. Pass props as an intitial value: Child component use it as a local data property afterwards.
+       const counter = ref(props.initialCounter); // it if disconnected from future prop updates
+    2. Use a computed property => computed(()=> props.size.trim().toLowerCase()); // auto-updates when the prop changes
+
+    For mutating objects and array props, emit an event from child and let parent to the mutating. (Objects are passed by reference in JavaScript)
+    {
+        type: [String, Number, Boolean, Array, Object, Date, Function, Symbol, Error]
+        required:
+        default: // should be a function for type "object"
+    }
+
+# Events
+Component:  Child: emit custom event directly, v-on:click="$emit('someEvent', 'arg1', 'arg2')";
+            Parent: Listen to it, <MyChild @some-event="handler" />  => .once modifier is available.
+            We can validate emitted event in defineEmits itself => A function which receives all args and returns true/false. 
+
+1. const emit = defineEmits(['event1', 'event2']);
+emit('event1')                                                                          
+                                                                                            
+2. In template, this.$emit('someEvent', 'arg1')    
+ 
+3. emits: ['inFocus', 'submit'],             
+    setup(props, ctx) {                                                               
+        ctx.emit('submit')
+    }
+
+# v-model on Component: 
+In child, 
+const model = defineModel();     const title = defineModel('title');
+{{ model }}.                     {{ title }}
+
+In parent, 
+<Child v-model="count"/>         <Child v-model:title="My Title"/>
+
+Under the hood, defineModel is a convenience macro.
+Expands in to : prop named "modelValue", synced with localRef.
+                event named "update:modelValue", emitted when localRef is updated. 
+
+
+Basically, const props = defineProps(['modelValue']);
+            const emit = defineEmits(['update: modelValue']);
+            @input(update: ModelValue)
+
+
+# Fallthrough attribute:  An attribute or v-on event listener that is passed to a component, but is not explicitly declared in the receiving component's prop or emits.
+Examples: class, style, id. 
+In case of clash, both will be triggered.
+
+Accessed in template by: $attrs;
+Accessed in script setup by: const attrs = useAttrs();
+Accessed in setup(props, ctx): ctx.attrs;
+
+//defineOptions({
+  inheritAttrs: false
+})  => Won't be applied to root node. Common scenario: apply attributes to other elements besides the root node.
+
+If multiple root elements are there, a warning will be issues if attributes are not bound explicitly... v-bind="$attrs"
+Not reactive => Cannot use watchers. For reactivity, use props.
+To perform side effects, use onUpdated() => perform side effects on latest attrs on each update;
+
+# Slots
+Pass template fragment as a props.
+<MyComponent>
+<!-- Slot Content --> 
+</MyComponent>
+
+<ChildComponentCode>
+    <slot><!-- This is the fallback content --> </slot>
+</ChildComponentCode>
+
+Slot content => Any valid template
+Named Slot => <slot name="header"></slot>, (v-slot:header) (#header)
+Default Slot => #default => content passed without any v-slot attribute.
+Dynamic Slot name => #[dynamicSlotName]
+
+Passing props from child =>
+
+Parent:   <MyComponent v-slot="slotProps"> {{slotProps.text}} </MyComponent>
+Child:    <slot :text="Atharva" /> 
+
+Internal Working: MyComponent passes a default function: (slotProps) => {}.  Child calls this function. slots.default();
+
+"Renderless Component" => Components that only have logic and entire data is rendered using slots by the consumer component.
+
+# Provide/Inject
+
+"Props Drilling": Process of passing down props from parent component to deep nested child component. 
+Solve it using => provide/inject
+Parent -> Dependency Provider 
+Descendant -> Inject Dependencies
+
+provide() => 2 Arguements (injection key, injection value)
+* Value can be reactive.
+
+app.provide() => Provide values to all components. Used for plugins.
+
+inject() => 1 Arguement (injection key). const message = inject('key');
+
+# Async Components: 
+const AsyncComp = defineAsyncComponent({
+    loader: () : import('./Foo.vue'),
+    loadingComponent: LoadingComponent,  => default 200ms delay before showing this
+    delay: 200,
+    errorComponent: ErrorComponent,
+    timeout: 3000
+})
+
+***********************
+ Reusability in Vue.js
+***********************
+
+1. Composables:
+----------------
+
+Function that leverages composition API to encapsulate and reuse stateful logic
+
+Stateful Logic: Composables
+Stateless Logic: Lodash, fns
+
+Syntax: 
+export function useSomething() {
+    // Reactive state constants
+    // Methods for managing state
+    // Lifecycle Hooks
+    return { reactive state }; // expose managed state as return value
+}
+let { reactive state } = useSomething();
+
+Nestable => One composable can call another composable
+Convention => "use"Composable
+Arguement => string / ref / getter Arguements. Use toValue() to get value of arguement.
+Reactivity => call function in watchEffect or explicitly watch value of arguement.
+Return Value => Return a plain, non-reactive object containing multiple refs. Allows destructuring in parent without losing reactivity. 
+
+Usage: Organize component code into smaller functions based on logical concerns 
+
+
+// TIP: Try to incorporate useAxios composable in ObjectStore Project
+
+**********
+toValue()
+**********
+normalize refs or getters into values;
+If ref => ref's value
+If function => execute it and return it's value
+
+Comparison: 1. Mixins 2. Renderless Components 3. React Hooks
+Cons is mixins -> Unclear source of props, namespace collisions, cross-mixin communication is difficult
+
+2. Custom Directives:
+---------------------
+Object containing lifecycle hooks similar to those of a component.
+Reusing logic that involves low-level DOM access on plain elements.
+
+Syntax => const vFocus = {mounted: (el) => {// do something}} <input v-focus/>..... directives: { focus: {}}... app.directive('focus', {})
+            Instead of hooks, if it's written as a function, it will be called for both mounted and updated hook
+Arguement => el => element 
+             binding => {
+                value:
+                oldValue:
+                arg:  v-my-directive:"foo"
+                modifiers: v-my-directive.foo.bar {"foo": true, "bar": true}
+                instance: Component instance
+                dir: the directive definition obj
+             }
+             vNode:
+             prevVNode: 
+
+Usage with Components => Fallthrough to root element. If multiple roots, ignored with warning. Cannot bing to specific using v-bind="$attrs"
+
+3. Plugins:
+-------------
+Plugins: Self-contained codes that usually add app-level functionality to Vue.
+app.use(myPlugin, {// Options});
+
+Object that exposes install() method OR function that acts as install function itself
+
+Syntax => install(app, options)
+Arguement => app instance, options
+Use Case => Register global components or custom directive with app.component(), app.directive();   (Vue-Toastification)
+            Make a resource injectable throughout the app by calling app.provide();    (Axios baseApi)
+            Add global instance properties or methods by attaching them to app.config. (i18n)
+            Library (vue-router)
+
+OST Use Case => plugin axios.ts => provide baseApi.  Inject baseApi in different pinia stores
+
+--------------------
+Built-in Components
+--------------------
+1. <Transition> Element is entering or leaving the DOM.
+<TransitionGroup> Element inserted, removed or moved within v-for
+
+Transition: 
+Triggered by => v-if, v-show, Dynamic Component using <component>, changing "key" attribute
+CSS-based transitions => v-enter-from, v-enter-active, v-enter-to, v-leave-from, v-leave-active, v-leave-to 
+Named Transition => <Transition name="fade">.. "name"-enter-from
+
+OST Task => Add transition while adding and removing items from list (Site Replication)
+
+
+2. <KeepAlive />
+------------------
+conditionally cache instances when dynamically switching between multiple components.
+
+<component :is/> => When switched, the component is unmounted and it loses it's state. 
+<KeepAlive> <component/> </KeepAlive>
+Props: include="" exclude=""
+Lifecycle Implication: State changes to "deactivated" instead of "unmounted". onActivated, onDeactivated.
+
+3. Teleport
+------------
+Teleports a fragment from where it is to some other part of the DOM.
+Mostly done for animation and transition purposes.
+
+<Teleport to="Css Selector"> Wrap 
+
+Alters rendered DOM structure.
+Logical Hierarchy of Components stay the same.
+
+
+-------------------------
+        Scaling Up
+-------------------------
+
+1. SFCs - Single File Components
+---------------------------------
+
+*.vue files => special file format, allows to encapsulate the template, logic and styling.
+
+Cons: Build step
+Pros: Familiar HTML, CSS, JS syntax
+      precompiled templates without runtime compilation cost
+      component scoped css
+      HMR support 
+
+Requirement: precompiled using "@vue/compiler-sfc" into standard javascript and css. (Vite, Vue-CLI have this built-in)
+
+2. Tooling
+-----------
+Vite: Lightweight, fast build tool with first-class Vue SFC support (Created by Vue author)
+npm create vue@latest
+
+Vue-CLI: Official webpack-based toolchain for vue.
+
+****************************
+ Composition API (In-Depth)
+****************************
+
+setup() 
+-------
+This hook serves as the entry point for Composition API usage in components in following cases:
+1. Composition API without build step.
+2. Composition API based code in Options API component.
+
+<script setup> is a more succinct and ergonomic syntax
+
+setup reactive states in setup and return to be used in template.
+- does not have access to component's this. 
+- must be synchronous (except Suspense component's descendent)
+
+Arguements:
+1. props => (Do not destructure as they will lose reactivity)
+    Use toRefs() for destructuring: const { title } = toRefs(props);
+
+2. context => attrs, slots, emit, expose. (Non reactive object)

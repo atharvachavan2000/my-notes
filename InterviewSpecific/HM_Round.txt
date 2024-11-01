@@ -1,0 +1,153 @@
+===============
+JOB Description
+===============
+
+Building for scale, rapid iteractive development, and customer-centric product thinking at each step define every day for a Zepto engineer. 
+If building technology that impacts millions, brainstorming with some of the best minds in the country, executing at lightning speed, 
+product-driven thinking, and owning your work from start to finish excites you, then Zepto is the right place for you.
+
+Responsibilities:
+
+Develop high-quality Javascript (ES6) code for our React-based web applications.
+Coordinate with backend engineers to establish JSON-based APIs
+Optimise application for maximum speed and compatibility
+Integrating third-party dependencies and debugging dependency conflicts
+Incorporate engineering best practices, methodologies, and standards in all deliverables
+Figma Mockup Follow
+Recommendations for UI/UX
+
+Requirements:
+1+ year experience
+React JS
+React JS Issues & Contribution to Library
+Optimization
+ES6+ Syntax & Typescript
+Unit tests => Jest
+Web Crashes & Bugs Monitoring & Tracking using Advanced Tools
+High Ownership & commitment
+Ground Up, Fun to Work With
+
+
+Q1. Why do you want to leave your current job?
+
+I am grateful for the opportunity provided by the Robin team and they deserve the credit for whatever I have learned.
+However, the company has entered a stable phase. The products are mature and the hunger is missing somewhat. While that's not necessarily a bad thing, 
+I am at that stage of the career wherein I want to put in the hours and tackle new challenges on a day to day basis.
+While I have enjoyed my time here and have learned almost everything that I know, I think I have reached a point where both the company and me 
+cannot contribute any more. One major driving factor is the direction of the company, as in, there's not as much focus on the UI as I would have liked.
+I feel that in a company like Zepto, the UI simply cannot play second fiddle. It has to be upto the mark, and I'm excited to work in such an environment where
+my contributions matter more. 
+
+[RESEARCH] Q2. Why Zepto?
+- We deliver fast and are growing faster.   
+- As I said, UI can make or break Zepto
+- customer-centric, end to end ownership
+- I really like the theme :p
+
+Q3. What are your strengths and weaknesses?
+1. Strong Logical Thinking -> Analyze Complex Problems, Break them Down into Smaller Parts, and Develop Effective Solutions
+2. Organizaed -> Highly Organized, Memory Maps,
+3. Good Teacher -> Explaining stuff, analogies
+
+Weaknesses:
+1. I'm good at catching mistakes, for eg, on PRs. So that can come across as Critical.
+   But I am aware of it ofcourse, and I am working on it to share my views without making the other person feel something they shouldn't.
+2. Overthinking & Organizing can slow me down, but I am working on it by trusting my initial gut more.
+
+Q4. 5 Year and 10 Year Plans 
+In 5 years,
+I want to have complete domain expertise in Frontend and be able to lead my own team.
+Apart from that, I want to keep learning continuously, regarding both, the latest developments in the Frontend World as well as outside of my domain.
+
+In 10 years,
+I see myself at a senior leadership role wherein I can influence strategic decisions of the company and drive significant projects.
+
+Q5. What feature would you like to see in Zepto?
+In terms of the actual App, I can't think of anything right now. It's top notch. 
+One thing I would like to point out about is the coporate website. 
+I think it can be much better, it can depict more of the story of Zepto, it's vision and mission.
+Currently, I think it redirects to Medium wherein I couldn't find that much content. 
+
+One thing that I particularly loved was the recipes section, where in you can just buy ingredients that you don't have.
+
+
+Q6. Biggest Challenge Faced Till Now
+There have been many challenges faced, be it tight deadlines or complex features and limited manpower. However, one particular instance
+stands out the most to me:
+- Milicore support in GUI => 10+ Pages just to add decimal support to checkbox => Took a month including testing for a very minor change.
+- Two simultaneous servers => httpd proxies => 1 PHP, 1 Vue.js => Update the router file => keep styling consistent
+
+Q7. Things you liked most and hated most at your current company
+- Like the most: 
+  - It's an open environment, so I get to choose what features that I can work on. Access to entire codebase of backend as well.
+  - Knowledge transfer sessions
+- Hated the most:
+  - First year was entirely remote => that's the worst thing that can happen to a fresher imo
+  - Importance of GUI 
+
+Q8. Tell me about a situation where you received critical feedback?
+- In my first year at my previous job, I was still getting accustomed to the workflow and was hesitant to ask question,
+  fearing they might be perceived as 'stupid'. 
+- When I was assigned a feature to develop, I started working on it immediately based on my incomplete understanding of the requirements. 
+- It led to regressions and delays becauese of these bugs.
+- As it was a pretty basic mistake, my manager was a bit confused, and she asked if I was not aware of it. When I confessed, 
+  she just laughed a bit and explained me everything from scratch.
+
+
+Q9. Tell me about a situation where you managed a conflict with your manager or seniors
+- Backend manager wanted us to work twice => once for the demo, once actual
+- Sat through, professionally, explained why it would be a bad idea. No one touches it afterwards, it was agreed.
+
+Q10. Tell me about your past achievements
+- Workplace: Presentation on LDAP, Linting, Erasure Coding.
+- College: Badminton Team Captain, 10/10 CGPA in First Year
+
+Q11. Expectations out of this role
+- Zepto delivers fast and is growing faster, and I just want to be a part of this growth story.
+- I expect to work at a place where UI matters, newest technologies are used and a dynamic work environment.
+- Solving problems of common people with a customer-centric approach & ownership of end-to-end features 
+
+Q12. Why sould we hire you?
+I believe that I'm technically a very strong candidate and I am very quick learner. I have vast experience in building all kinds of web applications.
+I always focus on learning the key underlying concepts, which allows me switch between technologies seamlessly. 
+I am logical thinker and I can breakdown complex problems and find solutions. and I'm told that I'm a pretty good teacher, so I am efficient in knowledge sharing.
+I always take initiative, and whatever work is assigned to me, I take full ownership and  go an extra mile if required to deliver it. 
+
+All in all, I believe my strong technical skills, problem soliving skills and commitment to ownership make a an excellent candidate.
+
+Q13. Tell me about a time when a project you worked on went wrong?
+
+
+Q14. Tell me about a time you had to give someone a critical feedback
+I had a situation last with one my teammates. I noticed that he kept asking the same question and his work wasn't upto to the standards.
+So I schedule a call with him. I asked him why was this happening => I asked him to record the calls and go through the recording.
+And also to check multiple ways to do something and why to choose which way.
+
+Q15. How do you make sure you write quality code
+While writing the code, I make sure to follow appropriate design patterns and the latest official documentation.
+I start with something simple and keep on refactoring it. I add comments wherever necessary.
+Follow coding standards => ES Lint and Prettier guidelines. Unit testing is pretty important. 
+I think if you're unit tests are becoming too complex, then it's a sign of bad code.
+I participate in code reviews => everyone reviews everyone else's code.
+
+Q16. Tell me about a time you learn something outside of job
+If Tech Related => Erasure Coding, openLDAP 
+Non Tech => I spend a lot of time in learning about interesting geographical features and facts and watch videos on them.
+
+
+
+11:08 - Conflict resolution
+12:19 - Upskilling techniques
+13:05 - Difficult situation in the project
+15:35 - Project processes
+18:25 - Job description awareness
+18:55 - Handling mistakes
+20:11 - Work prioritization
+21:12 - Individual vs team work
+22:05 - Stress management
+22:53 - Not in resume
+23:20 - Manager's feedback
+24:05 - Best fit for the role
+24:56 - Questions for interviewer
+25:21 - Interview preparation tips
+26:50 - Subscribe and upcoming videos

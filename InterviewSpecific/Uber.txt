@@ -1,0 +1,181 @@
+If 35 min OA on CodeSignal:
+Format: 2 Coding Questions (1 Easy, 1 Medium) (Math, Hashmap + String);
+        8 MCQs based on HTML, CSS, JS
+
+
+[DONE C++, JavaScript] https://leetcode.com/problems/subtract-the-product-and-sum-of-digits-of-an-integer/ 
+[DONE C++, JavaScript] https://leetcode.com/problems/construct-k-palindrome-strings/ - 1400
+[DONE - Premium] https://leetcode.com/problems/strobogrammatic-number/description/
+[DONE - Premium] https://leetcode.com/problems/strobogrammatic-number-ii/description/
+[DONE C++] https://leetcode.com/problems/longest-substring-without-repeating-characters/
+[DONE C++] https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
+[DONE C++] https://leetcode.com/problems/number-of-islands/
+[DONE C++]  https://leetcode.com/problems/evaluate-division/ [DFS approach pending]
+[DONE C++] https://leetcode.com/problems/bus-routes/
+
+[DONE] JS => Grid Lights => Implemented
+
+Learnings: 
+    let arr = Array.from(String(n), Number);
+
+    const [key, value] of Object.entries(dict)
+    const freq = Array(26).fill(0);
+    const idx = c.charCodeAt() - 'a'.charCodeAt();
+
+    priority_queue<pair<int, int>> maxHeap;
+    priority_queue<pair<int, int>, vector<pair<int, int>>,
+                       greater<pair<int, int>>>
+            minHeap;
+
+
+Experience 5 (Senior Frontend Engineer)
+=============
+// Implement mapLimit, which is a utility function that produces a list of outputs by mapping each input through an asynchronous iteratee function. The provided limit dictates how many operations can occur at once.
+
+// Inputs
+// inputs: An array of inputs.
+// limit: The maximum number of operations at any one time.
+// iterateeFn: The async function that should be called with each input to generate the corresponding output. It will have two arguments:
+//      input: The input being processed.
+//      callback: A function that will be called when the input is finished processing. It will be provided one argument, the processed output.
+// callback: A function that should be called with the array of outputs once all the inputs have been processed.
+
+function getNameById(id, callback) {
+  // simulating async request
+  const randomRequestTime = Math.floor(Math.random() * 100) + 200;
+
+  setTimeout(() => {
+    callback("User" + id);
+  }, randomRequestTime);
+}
+
+function mapLimit(inputs, limit, iterateeFn, callback) {
+  // implement here
+
+  //
+
+
+
+
+}
+//example: 
+mapLimit([1, 2, 3, 4, 5], 2, getNameById, (allResults) => {
+  console.log("output", allResults); // ["User1", "User2", "User3", "User4", "User5"]
+});
+
+Output - 3
+
+Random Question Links: 
+https://leetcode.com/problems/maximum-subarray-min-product/
+https://leetcode.com/problems/bus-routes/ - Phone screen
+https://leetcode.com/problems/course-schedule-ii/
+
+Here you go!
+
+Most Popular Problems for Uber (last 6 months):
+
+
+Find the Closest Palindrome (19 times): https://leetcode.com/problems/find-the-closest-palindrome/
+
+
+Leftmost Column with at Least a One (15 times): https://leetcode.com/problems/leftmost-column-with-at-least-a-one/
+
+Merge Intervals (13 times): https://leetcode.com/problems/merge-intervals/
+
+Kth Smallest Element in a BST (12 times): https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+
+
+Word Search II (12 times): https://leetcode.com/problems/word-search-ii/
+
+
+Word Search (11 times): https://leetcode.com/problems/word-search/
+
+Construct Quad Tree (10 times): https://leetcode.com/problems/construct-quad-tree/
+
+Longest Repeating Character Replacement (10 times): https://leetcode.com/problems/longest-repeating-character-replacement/
+
+Top K Frequent Words (10 times): https://leetcode.com/problems/top-k-frequent-words/
+
+Two Sum (9 times): https://leetcode.com/problems/two-sum/
+
+Insert Delete GetRandom O(1) (8 times): https://leetcode.com/problems/insert-delete-getrandom-o1/
+
+Text Justification (8 times): https://leetcode.com/problems/text-justification/
+
+Bomb Enemy (7 times): https://leetcode.com/problems/bomb-enemy/
+
+Burst Balloons (7 times): https://leetcode.com/problems/burst-balloons/
+
+Minimum Time to Complete Trips (7 times): https://leetcode.com/problems/minimum-time-to-complete-trips/
+
+
+
+
+Experience 5:
+=============
+Practice Easy Math Quetions on leetcode
+String - Hashmap and Slidin window
+
+
+/**
+ * Write mapAsyncWithLimit() function that:
+ * - Takes an array of inputs (inputs arg)
+ * - Calls an asynchronous function with each input (iterateeFn arg)
+ * - Can only have a limit number of asynchronous functions running concurrently (limit arg)
+ * - Calls callback function after all inputs have been processed (callback arg)
+ */
+ 
+function fetchUsernameById(id, callback) {
+  // Simulates async request
+  const randomRequestTime = Math.floor(Math.random() * 100) + 200;
+
+  setTimeout(() => {
+    callback(`Username ${id}`);
+  }, randomRequestTime);
+}
+
+function mapAsyncWithLimit(inputs, limit, iterateeFn, callback) {
+	// Implement here
+	// Hint: Create some intermediate callback fn here to pass to iterateeFn
+}
+
+mapAsyncWithLimit([1, 2, 3, 4, 5], 2, fetchUsernameById, (allResults) => {
+  // This callback body runs after all inputs have been successfully processed
+  console.log(allResults);
+  // Should log: ["Username 2", "Username 1", "Username 3", "Username 4", "Username 5"]
+  // Note - order may not be same because of random async callback resolve time
+});
+
+
+
+Experience 3 -- Union FInd - Difficult Question -> LATER
+============ 
+Synonyms
+[
+["abc", "def", "ghi"],
+["pq", "rs", "uv"],
+["abc", "uv"],
+["jk", "rs"],
+["wrg", "yu", "io"]
+]
+Queries
+[
+["abc", "pq"],
+["jk", "abc"],
+["abc", "uv"],
+["zy", "xxx"],
+["zy", "xxx"]
+]
+
+Create an adjacency list for =>
+
+function countDistinctQueries(synonyms, queries) {}
+
+["abc", "pq"]  // distinct
+["jk", "abc"] // distinct
+["abc", "uv"] // duplicate, since ["abc", "pq"] is already a query
+["zy", "xxx"] // does not exist in synonym dictionary, hence distinct
+["zy", "xxx"] // does not exist in synonym dictionary but already seen argument, hence duplicate
+
+
+maintain a set for already asked arguements - part 1

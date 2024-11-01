@@ -1,0 +1,42 @@
+Responsibilites and Day to Day:
+
+GUI Team is responsible for looking after all the projects. And every product has a major release 4-5 months.
+So the features are decided and we take ownership of a particular feature, decide a deadline and work on it.
+Along with that, bugs keep cropping up which obviously have a higher priority.
+
+Apart from this, we have unofficially take ownership of a particular product 
+=> I am currently responsible for migration of CNP from PHP CodeIgniter to Vue3
+=> Pick a page -> List all of the requirements -> Improve logic (O n^2 to O n) => Rewrite in Vue3 using latest docs
+=> We keep track of improvements that so that things don't get lost.
+=> One of the things that I insisted was on setting up ES Lint and Prettier, and Mock Server as well => used husky and lint staged
+
+Mentor junior team members, took interviews
+Part of fun commitee.
+LDAP Sesssion, Linting Session
+
+CNP Migration Steps:
+Excel sheet to record response time of every page.
+Any scope of improvement in existing codebase?
+Difficult add new features => A feature that will 1 week of development in VueJS will take 3 weeks at least in PHP
+Testing in PHP?
+2 Servers => proxy using httpd 
+
+1. Linting? => Read Linting Doc
+2. What are Service Workers? What is MSW?
+Ans: 
+
+3. SSR - SPA - SSG
+4. What is Vitest? Which code runner was used? How did you setup. (Present in notebook)
+5. Which package was used for JSON and CSV import in Vue? 
+6. What is Helm? Why was the express server needed? Explain deployment flow.
+7. oAuth? What did you use?
+
+8. What is SCSS?
+
+
+
+React Optimizations
+Virtualizations
+Lazy Loading of Images in React => First Round How to do?
+Pub Sub? RxJs? 
+
