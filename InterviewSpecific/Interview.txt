@@ -24,10 +24,6 @@ Redesign it if necessary and reduce complexity.
 Write unit test and inform the QA that it's done.
 
 
-Questions to ask him:
-1. How would my first 6 months look like at Zepto?
-2. What are the projects are going on?
-
 1. Research the company … show them you understand what they do
 2. Read the job description 
 5. Be a team player … shares the credit 
@@ -77,16 +73,6 @@ Pros of React vs Vue:
 4. React Native advantage in ecosystem => React 360 as well for Virtual
 5. Adoption and widespread enterprise use
 6. Next is not really comparable to Nuxt if SSR application is required
-
-
-
-
-Amazon Leadership Principles:
-=============================
-Customer Obsession, Ownership, Invent and Simplify, Are Right, A Lot, Learn and Be Curious
-Hire and Devlop the Best, Insist on the Highest Standards, Think Big, Bias for Action, Frugality
-Earn Trust, Dive Deep, Have Backbone Disagree and Commit, Deliver Results, Strive to be Earth's Best Employer
-Success and Scale Bring Broad Responsibility 
 
 
 scrollContainer.clientHeight + scrollContainer.scrollTop >= scrollContainer.scrollHeight - 100
