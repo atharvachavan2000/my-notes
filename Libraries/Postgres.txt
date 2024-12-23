@@ -1,0 +1,13 @@
+\d for all tables;
+\h for all available commands;
+\d table_name; 
+\l List of databases; 
+\c Connect to database;
+
+SELECT * FROM table_name WHERE something="something";
+
+DELETE FROM table_name WHERE something="something";
+
+UPDATE table_name SET col=value WHERE something=something
+
+ALTER TABLE table_name RENAME COLUMN old_column_name TO new_column_name;

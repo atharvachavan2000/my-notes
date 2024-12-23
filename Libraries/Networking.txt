@@ -1,0 +1,317 @@
+TCP/IP Five Layer Networking Model
+
+Application - HTTP, SMTP - Messages - n/a
+Transport - TCP/UDP - Segment - Port #'s => Sorts out client and servers.
+Network - IP - Packet / Datagram - IP Address => Network to Network
+Data Link - Ethernet, Wi-Fi - Frames - MAC Address => Interpreting Signals
+Physical - n/a - Bits - n/a => Networking Cables and Connectors
+
+OSI Model:
+https://www.sans.org/reading-room/whitepapers/standards/osi-model-overview-543
+https://en.wikipedia.org/wiki/OSI_model
+
+Cables: Copper and Fibre
+Copper wires inside Plastic Covers => Cat5, Cat5e, Cat6 => Pulsating Voltage 
+Fiber - Pulses of light, tiny glass tube width of hair
+
+Hubs and Switches:
+
+Hubs - Data Collision, Lot of Waiting - Physical Layer Device
+Network Switch - Data Link Device => Send data to only one device by parsing Ethernet
+
+Router - Network Layer Device => Parses IP data and maintains IP Table. Determines where to send data based on IP.
+    Core ISP Router - BGP - Border Gateway Protocol
+
+Physical Layer:
+Transporting bits - 1s and 0s
+Modulation: varying voltage (Encoder, Decoder) 10 billion bits/Sec
+
+Twisted Pair Cabling: 
+Cat6 => 4 pairs (8 wires) => 2 pairs for sending, 2 pairs for receiving.
+Duplex Communication
+Unshielded TP, Shielded TP, Foiled TP
+RJ45 Plug -> plugged into network port => link and activity LEDs.
+Patch Panel -> Container for Network Ports.
+
+Data Link Layer:
+-----------------
+
+Ethernet and MAC Addresses:
+Ethernet: Protocol to send data
+CSMA/CD => Device is free to transmit data. (Carrier-Sense Multiple Access with Collision Detection)
+
+<!-- read more -->
+MAC Address: Media Access Control Address
+Global unique identifier attached to an individual network interface
+48-bit number => 6 groupings of hexadecimal pairs
+First three octets: Organizationally Unique Identifier
+Last three octets: On their own
+
+<! -- read more -->
+Unicast: One receiving address
+LSB in first octet of a destination address is 0, ethernet frame only for one destination address
+Multicast: is 1, Multiple receiving address. Criteria other than just mac address. 
+Broadcast: Ethernet Broadcast Address. all Fs. Sent to all devices on a LAN 
+
+<!-- read more -->
+Ethernet Frame: 
+Data Packet at Ethernet Level is Ethernet Frame:
+highly structured collection of info presented in a spec order
+
+Preamble - SFD - Dest Address -  Source Address - VLAN Header - EtherType - Payload - FCS
+7 bytes -  1  -       6      -         6       -    4        -    2       - 46-1500 -  4
+
+SFD - Start Frame Delimiter
+VLAN - virtualLAN  
+FCS - Frame Check Sequence - Checksum Value - CRC (Cyclical Redundancy Check)
+Ethernet - Data Integrity only and not Data Recovery.
+
+
+Network Layer
+--------------
+
+IPv4 => 32 Bits. 0-255.0-255.0-255.0-255
+dotted decimal notation.
+
+90.0.0.1 => IBM (9 in first octet = IBM's IP)
+IP Address belongs to Network that you are connected on.
+When you change network, your IP address changes.
+
+Dynamic Host Configuration Protocol (DHCP) => Dynamic IP Address
+Static IPs => Servers and Network Devices reserved
+
+IP Datagram Header: 2 Parts => Header & Payload
+Header is min 20 bytes => 160 bits
+
+(Read More)
+Header Content: Version 4 bits (IPv4, IPv6), Header Length (4 bit) => 1 byte total
+Service Type 8 bits (QoS Services) => 1 byte
+Total Length 16 bits => 2 bytes
+Identification Field 16 bits (?) => 2 bytes
+Flags & Fragmentation Offset => 16 bits => Taking single IP datagram and splitting. => 2 bytes
+Max. size = 65535 bits.
+TTL Field => 8 bits => Router Hops allowed (full form?) => 1 byte
+Protocol => 8 bit => Transport Layer Protocol (TCP/UDP details) => 1 byte
+Header Checksum => 16 bit => 2 byte
+Source IP => 32 bit => 4 byte
+Destination IP => 32 bit => 4 byte
+IP Options, Padding => Total 32 bits, Testing purposes => 4 byte additional
+
+IP Address => Network ID : Subnet ID : Host ID
+Network ID + Subnet ID = network portion of IP address
+Number of devices on a network = 2 ^ total number of host IDs available.
+0 => reserved for network address => address of the entire network => Packets sent here are typically configured to be discarded or ignored.
+255 => reserved for broadcast message
+
+Address Class System => Class A (1 Octet NetID), Class B (2 Octet NetID), Class C (3 Octet NetID) => Historic, CIDR is used these days.
+
+IP Address => 32 bits => 4 Octets => 8 bits : 8 bits : 8 bits : 8 bits
+
+A 0xxx 0
+B 10xx 128
+C 110x 192
+D 1110 224 reserved for multicast addresses. Sending data to multiple devices simultaneously.
+E 1111 240 unassigned, experimental purposes. Not used for general networking
+
+Address Resolution Protocol:
+Discover hardware address of node with certain IP address.
+ARP table => Table of IP Address - MAC Address
+
+ARP Broadcast Messages => ARP Response with MAC Address (ARP reply is unicast)
+Local ARP Table mdhe stored.
+ARP Table expires in short time.
+
+ARP is only needed in a local network.
+From router onwards, routing is done based on IP address and not MAC address.
+To form an ethernet packet, router puts it's own IP Address as Source MAC address and gateway router's MAC address as destination MAC address.
+But the hops are made based on destination IP, rather than these MAC addresses.
+
+http://whatismyipaddress.com/ Try this.
+
+---------------------------------------------------------------------------------
+SOURCE: https://www.practicalnetworking.net/stand-alone/classful-cidr-flsm-vlsm/
+---------------------------------------------------------------------------------
+
+Class A = /8, B = /16, C = /24 By Default. 
+
+In the early days, of classful networking,
+If a company requires 200 IP address, one block from Class C range would be assigned
+for 50,000 IP addresses, block from Class B would be assigned.
+for >65000 IP addresses, block from Class A would be assigned. 
+
+for 25,000 IP Addresses, either you waste 40,000 IPs or buy 98 /24 blocks from Class C range.
+
+CIDR was adopted from 1993.
+
+Now, if you need 300 IP address, you receive a /23.
+                 1000 IP addresses, you receive a /22
+                 25,000 IP addresses, you receive a /17
+
+Now, FLSM and VLSM => Fixed-Length, Varied-Length Subnet Mask
+This is how IP address space is assigned within in each organisation, and not by IANA/RIRs.
+
+For eg, if 9.9.9.0/24 is assigned to you from IANA. 
+
+Now, you can apply a subnet mask of your own, /27 to divide your own IP space.
+So you end up with, 9.9.9.0 /27
+                    9.9.9.32 /27
+                    9.9.9.64 /27
+and so on.
+This was used earlier to save transmitting bits of subnet mask. 
+
+Subnetting: 
+//////////// OLD INFO START ///////////////
+Taking a large network and splitting into subnets.
+9.100.100.100 => 9.O.O.O Gateway Router => Subnet Router
+Core Router => Network ID => Gateway Router
+SubnetID: Network Portion, (IPv4 & Subnet Mask) => Address of Sub-Network itself.
+
+Subnet Masks => 32 bits.
+255.255.255.0 => (256 address) 1-254 hosts.
+255.255.255.224 => 5 bits of HOST ID space => 32 hosts
+Shorthand way of writing subnet => 9.100.100.100/27 
+27 = 27 1s 5 0s => 255.255.255.224
+
+When IP Address is ANDED with subnet mask, we get the IP address of the network.
+This IP address is used to identify the subnet network within a large network.
+//////////// OLD INFO END ///////////////
+
+
+CIDR: Classless Inter-Domain Rounting
+Demarcation Point: One network or system ends and another one begins.
+"/" Cider Notation.
+
+a.b.c.d/e in CIDR, represents an IP address, where in e bits are reserved for network portion and remaining are host bits. 
+
+9.100.100.100
+Netmask: 255.255.255.0
+=> 9.100.100.100.0
+
+Routers: (min 2 network interfaces)
+A networking device that forwards traffic.
+
+Home Router: WLAN
+
+Receive Packet => Examine Destination IP => Look through Routing Table => Forward to next hop
+
+Router => Strips away data link layer.
+Inspect and find destination IP.
+Checks router table
+decrements TTL, checksum calculate
+Source MAC address = Router self, dest = network it wants to send
+
+Router has a Routing Table, assigns a Metric to each path based on bandwidth, delay, reliability, hop count. Chooses path with lowest metric.
+Shares routing updates with neighbouring routers to learn about network topology changes
+Has an algorithm for Shortest Path Algorithm like Djikstra's. Bellman Ford.
+
+Routing Table:
+Destination Network => Next HOP => Total Hops => Interface
+Each network that router knows 
+
+Routing Protocols => special protocols routers used to speak to each other.
+IGP and EGP
+
+Interior Gateway Protocols:
+Share info in a single autonomous system.
+Eg: Company, ISP
+
+Two types of IGP:
+    Link State, Distance Vector Protocol
+
+LS => OSPF (Open Shortest Path First)
+DV => RIP, EIGRP (Routing Information Protocol)
+
+Exterior Gateway Protocol: BGP
+IANA => manage things like IP Address Allocation
+
+(?) ASN - Autonomous System Number 
+    32 bit numbers 
+
+Request for Comments => Published by Internet Engineering Task Force (IETF)
+It is a series of documents that are used to define standards, protocols, procedures, and guidelines for the Internet.
+first published in 1969
+
+Non-Routable Address Space: (RFC 1918)
+
+Range of IPs set aside for use by anyone. No core router will not redirect.
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
+
+127.0.0.1 => Loopback address. Establish IP connection to the same host on which the program is running;
+Resolves to standard hostname "localhost";
+Testing network connectivity on a local machine without actually sending data over a physical network;
+
+----------------
+Transport Layer
+----------------
+Allows traffic to be redirected to specific network applications.
+multiplexing, demultiplexing, data integrity
+
+Processes -> Multiplexer -> IP
+IP -> Demultiplexer -> Processes
+
+Port: 16 bit-number
+http: default port 80
+ftp: default port 21
+10.1.1.100 => Socket Address / Socket Number
+
+TCP Segment: IP Datagram Payload
+TCH header = TCP payload
+
+Source Port - Destination Port (16 bit, 16 bit)
+Sequence Number (32 bit) - which segment data belongs to
+Ack Number (32 bit) - number of next expected segment
+Header Length, Empty, Control Flags (4, 6, 6) Window 
+Checksum (16) (TCP Checksum (16) -> Range of sequence numbers that might be sent before an acknowledgement is requited) Urgent (16)
+Options (0 or 16) Padding
+Data Payload (varies)
+
+Three Way Acknowledgement:
+6 Control Flags:
+URG 1 => Urgent Pointer field has more data
+ACK 1 => Ack
+PSH 1 => as soon as possible, send buffer data. 
+RST 1 => let's start over
+SYN 1 => first message, check sequence number
+FIN 1 => Over n out
+
+A => SYN Flag set
+B => SYN Flag set, ACK set
+A => ACK Flag 
+
+Four Way Handshake
+A => Fin
+B => Ack
+B => Fin
+A => Ack
+
+Socket: The instantiation of an end-point in a potential TCP connection
+instantiation : actual implementation of something defined else where
+
+Socket States: 
+LISTEN => ready and listening
+SYN_SENT => client side only
+SYN_RECEIVED => server side only
+ESTABLISHED
+
+FIN_WAIT
+CLOSE_WAIT
+CLOSED
+
+TCP - Connection Oriented Protocol
+Ensures every segment of data sent is acknowledged
+
+UDP - Conectionless Protocol
+User Datagram Protocol
+
+A socket is a port that a TCP segment has activated to listen for data requests.
+Ports -> System ports, User ports, Ephemeral Ports
+
+Firewall:
+A device that block traffic that meets certain criteria
+Most commonly used at Transport Layer
+
+Allow port 80, block all other ports
+physical device as well as on host devices as a software
+

@@ -1,0 +1,215 @@
+I wish someone had given me this cheat sheet when I started interviewing for software engineering positions.
+
+Topics covered: SOLID, ACID, System design concepts & Leetcode patterns.
+
+► SOLID Principles:
+
+1. Single Responsibility: Each class should have only one job.
+2. Open/Closed: Classes should be extendable without being modified.
+3. Liskov Substitution: Subclasses should be replaceable with their parent classes.
+4. Interface Segregation: Prefer small, specific interfaces over general ones.
+5. Dependency Inversion: Rely on abstractions rather than specific implementations.
+
+
+►ACID Properties:
+
+1. Atomicity: Transactions are indivisible units; they either fully succeed or completely fail.
+2. Consistency: Each transaction must maintain the database's consistency.
+3. Isolation: Transactions should execute independently without affecting each other.
+4. Durability: Once a transaction is finalized, it must persist even through system failures.
+
+► System Design Key Concepts
+
+1. Scalability: https://lnkd.in/gpge_z76
+2. Latency vs Throughput: https://lnkd.in/g_amhAtN
+3. CAP Theorem: https://lnkd.in/g3hmVamx
+4. ACID Transactions: https://lnkd.in/gMe2JqaF
+5. Rate Limiting: https://lnkd.in/gWsTDR3m
+6. API Design: https://lnkd.in/ghYzrr8q
+7. Strong vs Eventual Consistency: https://lnkd.in/gJ-uXQXZ
+8. Distributed Tracing: https://lnkd.in/d6r5RdXG
+9. Synchronous vs. asynchronous communications: https://lnkd.in/gC3F2nvr
+10. Batch Processing vs Stream Processing: https://lnkd.in/g4_MzM4s
+11. Fault Tolerance: https://lnkd.in/dVJ6n3wA
+
+► Leetcode problem-solving patterns
+
+1. Backtracking Patterns: https://lnkd.in/gVkQX5vA
+2. Bit Manipulation Patterns: https://lnkd.in/gmMMST5J
+3. Dynamic Programming Patterns 1: https://lnkd.in/gbpRU46g
+4. DFS + BFS Patterns (2): https://lnkd.in/gd4ekfQe
+5. Tree Patterns: https://lnkd.in/gKja_D5H
+6. Sliding Window Patterns: https://lnkd.in/gjatQ5pK
+7. Two Pointers Patterns: https://lnkd.in/gBfWgHYe
+8. DFS + BFS Patterns (1): https://lnkd.in/gPgpsgaQ
+9. Graph Patterns: https://lnkd.in/gKE6w7Jb
+10. Monotonic Stack Patterns: https://lnkd.in/gdYahWVN
+11. Substring Problem Patterns: https://lnkd.in/giASrwds
+12. Backtracking Patterns: https://lnkd.in/g9csxVa4
+13. Dynamic Programming Patterns 2: https://lnkd.in/gcnBActT
+14. Binary Search Patterns: https://lnkd.in/gKEm_qUK
+15. String Question Patterns: https://lnkd.in/gkNvEi8j
+16. 14 Coding Interview Patterns: https://lnkd.in/gMZJVkFf
+
+–
+P.S: What would you add more to the list?
+
+Note: All credits on this list for resources belong to their respective owners, I don't claim to be the creator. I've only curated the list.
+
+
+
+Next Round: HLD
+Level: Software Engineer
+
+If Your next round is "HLD". Sharing you the below top 10 topics with resources which you must know, before appearing for an interview:
+
+1. Microservices Design Patterns in depth:
+https://lnkd.in/g6B9fCYS
+
+2. How to Scale from 0 to Million users:
+https://lnkd.in/gDJgTxX5
+
+3. Back of the Envelope Estimation:
+https://lnkd.in/d5C5A6jK
+
+4. SQL vs NoSql:
+https://lnkd.in/dWp_MbAb
+
+5. Kafka in depth:
+https://lnkd.in/dhXRZ5u2
+
+6. Load Balancers and its Algorithms:
+https://lnkd.in/ditp_hdx
+
+7. Database Indexing in depth:
+https://lnkd.in/dR5fi_Tw
+
+8. Concurrency Handling (Optimistic and Pessimistic) :
+https://lnkd.in/dfyk7ddy
+
+9. OAuth 2.0 in depth:
+https://lnkd.in/gAgWtksn
+
+10. JWT in depth:
+https://lnkd.in/gm4b7xhg
+
+If Your next round is "Spring boot - tech stack". Sharing you the below top 10 topics with resources which you must know, before appearing for an interview:
+
+Next Round: Spring boot Tech Stack
+Level: Software Engineer
+
+1. Advantage of Spring boot over traditional Spring MVC:
+https://lnkd.in/gbHYBdFJ
+
+2. What is Layered Architecture:
+https://lnkd.in/gdstJnet
+
+3. Maven Lifecycle
+https://lnkd.in/gjYygKX7
+
+4. Spring boot REST Api Annotations
+https://lnkd.in/gGYpinzs
+
+5. Bean Lifecycle and IoC
+https://lnkd.in/g6PCbj5U
+
+6. Dependency Injection:
+https://lnkd.in/gMBUFDxC
+
+7. Bean Scope:
+https://lnkd.in/gita68gc
+
+8. How Profiling works in Spring boot:
+https://lnkd.in/gNJ69SuD
+
+9. How you will initialize bean conditionally:
+https://lnkd.in/gB-_M5sN
+
+10. Dynamic Initialization of Bean:
+https://lnkd.in/gaerePEh
+
+
+If Your next round is "Java - tech stack". Sharing you the below top 10 topics with resources which you must know, before appearing for an interview:
+
+Next Round: Java
+Level: Software Engineer
+
+1. OOPs Concept with Examples:
+https://lnkd.in/gRZCbYFs
+
+2. Understand JDK, JRE, JVM:
+https://lnkd.in/dr7eunXS
+
+3. How FLOAT number is handled in Java:
+https://lnkd.in/gi52Bufd
+
+4. Garbage Collector:
+https://lnkd.in/dvRiixhi
+
+5. Functional Interface and Lambda Expression:
+https://lnkd.in/dy8_4Guz
+
+6. Collection:
+https://lnkd.in/g2V2bKMT
+
+7. Streams:
+https://lnkd.in/dGMj422C
+
+8. Multithreading and Concurrency:
+https://lnkd.in/dy8HhadY
+
+9. Exception Handling:
+https://lnkd.in/d74ERzji
+
+10. ThreadPool:
+https://lnkd.in/d8_RyVEa
+
+If Your next round is "LLD". Sharing you the below top 5 topics with resources which you must know, before appearing for an interview:
+
+Next Round: LLD
+Level: Software Engineer
+
+1. SOLID Principles: https://lnkd.in/dhv98APT
+2. All Creational Patterns: https://lnkd.in/dBbA7Htc
+3. All Structural Patterns: https://lnkd.in/dudjBtse
+4. All Behavioral Patterns: https://lnkd.in/gfwN7hTC
+5. Design Payments System: https://lnkd.in/gi4WXvft
+
+
+KMP, Robin-Karp
+Pattern Matching Algorithms
+
+https://jenkov.com/tutorials/java/index.html
+AOP - Aspect, POJO
+
+27 blogs on Distributed systems by Netflix that will teach you more than a generic $3000 bootcamp course. 
+
+This is my reading list, save this if you’re into distributed systems, I will be posting my notes on these blogs soon. 
+
+ö https://lnkd.in/eHa2M5Ez
+ö https://lnkd.in/eJHH_iKY
+ö https://lnkd.in/ehV2KSDG
+ö https://lnkd.in/eTrFyMYZ
+ö https://lnkd.in/eciwszc3
+ö https://lnkd.in/eXMr9chJ
+ö https://lnkd.in/eXMr9chJ
+ö https://lnkd.in/ec74WZif
+ö https://lnkd.in/eeY6hqiV
+ö https://lnkd.in/eRZwq4RN
+ö https://lnkd.in/eCKWigFA
+ö https://lnkd.in/etHYcb4V
+ö https://lnkd.in/eNfqGSQY
+ö https://lnkd.in/ecA5hfMf
+ö https://lnkd.in/e7yFxsMZ
+ö https://lnkd.in/e8BbuYSW
+ö https://lnkd.in/ehkWejs2
+ö https://lnkd.in/eqwVtUJZ
+ö https://lnkd.in/ewB67NW2
+ö https://lnkd.in/eiK9B7nr
+ö https://lnkd.in/eiPeRW5E
+ö https://lnkd.in/ea-MupEv
+ö https://lnkd.in/eeWxPqfq
+ö https://lnkd.in/euF-6TUr
+ö https://lnkd.in/eKCvpRcj
+ö https://lnkd.in/eRjaXM4j
+ö https://lnkd.in/eSmejh2g

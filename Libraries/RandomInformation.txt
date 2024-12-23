@@ -1,0 +1,360 @@
+Authentication Basics: 
+
+SSO - Single Sign On 
+Authentication process that allows a user to access multiple applications or websites by logging in just once.
+With SSO, user signs in to a central authentication system and can access any other systems or applications that are connected to that system without logging in again.
+Simplifies managing multiple usernames and passwords.
+Often used in corporate environments to allow employees to access a range of associated systems and services with a single set of credentials
+Cons: If central SSO is compromised, all applications are also compromised.
+Examples: Okta, Microsoft Azure Active Directory, Google Cloud Identity, Auth0, OneLogin
+
+Steps in SSO => Initial Login => Enter Credentials => Credential Verification (Can use Active Directory in this step) => Session Creation => Access to all application using this session
+
+Presentation Memory Map:
+------------------------
+
+What is the usecase?
+How does any organization store it's data? metadata. Tree like data structure right?
+Databases => Hierarchical, Network, Graph Database
+
+Every oraganization has one such central database, which contains all the information about it 
+We are going to learn how these database is created, maintained and queried.
+Just like HTTP is used by browsers to talk to Web Server, LDAP is a protocol used by clients to talk to the LDAP Database
+LDAP is a protocol which is used to talk to such databases. But the term has become synonymous with the entire process itself.
+
+Why to use LDAP protocol supported database? Why not any other SQL, noSQL?
+
+After concetps and terminology => 
+
+What is the use of this server? Okay, you have all the metadata of an organisation at a single place. What do we do with it? 
+Main usecase: Authentication
+             
+
+***********************************************************************************************************************
+
+LDAP - Lightweight Directory Access Protocol
+
+Official Documentation:
+LDAP: standards-based protocol, on top of TCP/IP
+
+LDAP, the Lightweight Directory Access Protocol, is a mature, flexible, and well supported standards-based mechanism for interacting with directory servers.
+Often used for authentication and storing information about users, groups and applications. But it's a fairly general-purpose data store.
+"Directory Servers": servers that manage a database of users, systems, networks, services, and applications throughout an organization. 
+They are a type of database that provides a central place where information can be stored and retrieved.
+
+Tools: openLDAP, Microsoft Active Directory, Novell eDirectory, Oracle Internet Directory
+
+Why LDAP?
+LDAP is a well-defined protocol. Client requests are explicitly specified, same as server responses.
+If noSQL => Each database has it's own protocol. Cannot change database without massive code changes.
+If SQL => Pretty standard, may be as simple as updating driver, but still means updating all of clients to ensure they can talk to new database.
+If LDAP Db => Lots of options available, can be changed any time without any implication
+
+LDAPv3 was release in 1997. It's very mature but also evolving.
+It's Lightweight: Messages are encoded with ASN.1 BER => Compact binary format, very efficient to encode & decode.
+Application Layer Protocol => Just like JSON over HTTP
+LDAP has persistent connections, where as HTTP-based have shortlived connections.
+Connections can live for hours or days or even longer.
+
+LDAP is optimized for read-heavy workloads, hierarchical and tree like data, directory like look-up service
+
+----------
+Concepts:
+----------
+Directory Servers: Directory Server Agent, a Directory System Agent, or a DSA
+   Type of network database that stores information represented as trees of entries (as opposed to rows, so it's basically NoSQL)
+
+Entries: Collection of information about an entity.
+		3 Components: Distinguished Name, Collection of Object Classes, Collection of Attributes, 
+
+DNs: unique identifier => path to a directory in file system
+   DN = 0 or more Relative DNs
+   Special DN => Null DN => 0 RDN => Empty string => references root DSE
+
+Object Classes => Object classes in LDAP (Lightweight Directory Access Protocol) are categories of attributes that can be used to describe a directory entry. They provide a way to classify and structure the types of information that can be stored in an LDAP directory.
+
+In LDAP schema, each entry is associated with one or more object classes. Each object class is a collection of attributes, 
+and each attribute holds a particular piece of data. 
+An entry's object class(es) determines what kind of object it is and what attributes it can or must have.
+
+CN => Commone Name => Name of an entry, unique within it's level but not throughout the directory
+DC => Domain Component => Root of the directory tree, usually name of the domain "com", "rakuten"
+OU => Organizational Unit => Subdivision within an AD into which you can place users, groups, computers and other OUs
+
+uid=john.doe,dc=example,dc=com
+john.doe@example.com
+
+What does having LDAP support mean for ObjectStore?
+
+If a user is an LDAP user, we won't be verifying his credentials. 
+We'll just send the credentials to the LDAP server and it's the job of the LDAP server to let us know if this user is authenticated or not. 
+After he's authenticated, we create an entry in our user database with his DN (if it doesn't), for internal usage such as assigning groups and policies.
+Setting up LDAP server is the job of the IT administrator of customer, not us.
+
+
+How are we integrating in our code?
+------------------------------------
+
+we use openLDAP for integration.
+See below question for steps.
+
+From UI: 1. While logging in, convert email to distinguished name.
+         2. Have a page where ldap servers details can be set.
+
+if username="atharva.chavan@rakuten.com" => Convert into "uid=atharva.chavan,dc=rakuten,dc=com"
+And send header => x-rakuten-user: true;
+Have a prettify function for converting uid, dc, dc to uid@dc.dc
+
+API call to set: LDAP URI:
+PUT "/ldap"
+Formdata: { "uri" : "ldap://10.9.53.116" }
+
+In BACKEND (? Check PR for steps): 
+
+Session Connection => user connects to the server via an LDAP port
+Request => User submits a query, such as an email lookup, to the server
+Response => LDAP protocol queries the directory, finds the information and delivers it to the user
+Completion => User disconnects from the LDAP port
+
+openLdapConnection
+ldapsearch -x  -H ldap://localhost -b "dc=rakuten,dc=com" uid="atharva.chavan"
+closeLdapConnection
+
+How to setup LDAP as an administrator?
+--------------------------------------
+- Install LDAP Server Software (openLDAP)
+- Configure the LDAP Server => set up root directory, permissions and rules for who can access this directory
+- Add Data to the directory => using LDAP Data Interchange Format (LDIF) file
+- Query the Directory
+- Manage the Directory
+- Secure the Directory
+- Integrate with Applications => Configuring applications to use LDAP (See below)
+
+----------------------------------------
+Installing an LDAP server on 10.9.63.32
+----------------------------------------
+Step 1:  Install all LDAP related packages  (yum => package manager for systems using Red Hat Manager => CentOS, Fedora, Red Hat)
+         sudo yum install openldap* -y
+
+         openldap* => all packages starting with openldap will be installed (openldap, openldap-clients, -devel, -servers, -servers-sql)
+         -y => answer yes to all prompts
+         TIP: "yum list installed", "rpm -qa" to see installed packages
+
+Step 2:  Start openLDAP setvice => Standalone LDAP Daemon.
+         sudo systemctl start slapd
+         sudo systemctl enable slapd
+
+         systemctl: Manage systemd system and service manager 
+         enable: Enable ensures slapd start ups automatically on every reboot
+
+Step 3: Generate hashed password for rootdn = Root Distinguished Name
+        sudo slappasswd
+
+Step 4: Update the database file =>  /etc/openldap/slapd.d/cn=config/olcDatabase={2}hdb.ldif
+        How? Create a db.ldif
+        
+        Contents: 
+         dn: olcDatabase={2}hdb,cn=config   
+         changetype: modify
+         replace: olcSuffix
+         olcSuffix: dc=rakuten,dc=com
+
+         dn: olcDatabase={2}hdb,cn=config
+         changetype: modify
+         replace: olcRootDN
+         olcRootDN: cn=admin,dc=rakuten,dc=com
+
+         dn: olcDatabase={2}hdb,cn=config
+         changetype: modify
+         replace: olcRootPW
+         olcRootPW: {SSHA}xxxxx
+
+         sudo ldapmodify -Y External -H ldapi:/// -f db.ldif
+
+         -Y External: SASL mechanism to be used for authentication. External = ldapi:/// or client's root privileges
+         -H ldapi:///: LDAP URL => /// means local LDAP server using IPC (Inter-Process Communication)
+         -f File
+
+Step 5: Add commonly used schemas, 2nd and 3rd allow object classes like InetOrgPerson, ShadowAccount
+         sudo ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
+         sudo ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
+         sudo ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif
+
+STEP 6: Create Entries in DB
+        LDIF File: 
+
+         // Top level domain
+         dn: dc=rakuten,dc=com
+         dc: rakuten
+         objectClass: top
+         objectClass: domain                    
+                 
+         // Organizational Units                                                     
+         dn: ou=People,dc=rakuten,dc=com                                      
+         objectClass: organizationalUnit              com => rakuten => People => atharva.chavan
+         ou: People                                           => Groups => Engineering => atharva.chavan                                                                  
+         dn: ou=Groups,dc=rakuten,dc=com                                => Indore    
+         objectClass: organizationalUnit                                => Pune => atharva.chavan
+         ou: Groups
+
+         // Posix Groups under Groups => Engineering, Pune, Indore
+         dn: cn=Engineering,ou=Groups,dc=rakuten,dc=com
+         cn: Engineering
+         objectClass: posixGroup
+         gidNumber: 20100
+         memberUid: atharva.chavan
+
+         dn: cn=Pune,ou=Groups,dc=rakuten,dc=com
+         cn: Pune
+         objectClass: posixGroup
+         gidNumber: 20101
+         memberUid: atharva.chavan
+
+         dn: cn=Indore,ou=Groups,dc=rakuten,dc=com
+         cn: Indore
+         objectClass: posixGroup
+         gidNumber: 20102
+
+         // Member Entry of atharva.chavan
+         dn: uid=rohit.raheja,ou=People,dc=rakuten,dc=com
+         objectClass: inetOrgPerson
+         objectClass: posixAccount
+         objectClass: shadowAccount
+         uid: rohit.raheja
+         sn: Raheja
+         givenName: Rohit
+         cn: Rohit Raheja
+         displayName: Rohit Raheja
+         uidNumber: 20001
+         gidNumber: 20100
+         userPassword: {CLEARTEXT}password
+         loginShell: /bin/bash
+         homeDirectory: /home/rohit.raheja
+
+         ldapadd -x -W -D "cn=admin,dc=rakuten,dc=com" -f entries.ldif
+
+         -x => Simple Authentication instead of SASL
+         -W => Prompt for simple authentication password
+         -D => Bind which user is making changes 
+         -f => File that's being added
+
+STEP 7:  Search for whatever you want
+         ldapsearch -x -LLL -H ldap://localhost -D "cn=admin,dc=rakuten,dc=com" -W -b "ou=Groups,dc=rakuten,dc=com" "(cn=Pune)" memberUid
+
+         -LLL: supress version and comment lines
+         -b: Base DN of tree
+         cn=Pune: search filter
+         memberUid: attribute to be returned
+
+STEP 8: Adding a new user
+         LDIF file:
+
+         dn: uid=johndoe,ou=People,dc=example,dc=com
+         objectClass: inetOrgPerson
+         objectClass: posixAccount
+         objectClass: shadowAccount
+         uid: johndoe
+         sn: Doe
+         givenName: John
+         cn: John Doe
+         displayName: John Doe
+         uidNumber: 10000
+         gidNumber: 5000
+         userPassword: {CLEARTEXT}password
+         gecos: John Doe
+         loginShell: /bin/bash
+         homeDirectory: /home/johndoe
+
+         ldapadd -x -D "cn=admin,dc=example,dc=com" -W -f newuser.ldif
+
+
+STEP 9: Assigning this user to a group
+         dn: cn=Pune,ou=Groups,dc=rakuten,dc=com
+         changetype: modify
+         add: memberUid
+         memberUid: rohit.raheja
+
+         ldapadd -x -D "cn=admin,dc=rakuten,dc=com" -W -f newUser.ldif
+
+STEP x: For deleting an entry,   
+         dn: "",
+         changeType: delete
+
+         ldapmodify -x -D "cn=admin,dc=rakuten,dc=com" -W -f delete.ldif
+
+
+Extra Information: 
+KeyCloak -  Open Source Identity and Access Management (IAM) tool
+   Alternative to commercial solutions like Okta
+   Steps:
+   Download and install KeyCloak
+   Create an Admin user
+   Login to the Admin Console
+   Create a realm
+   Create Client => Applications that will user Keycloak
+   Configure Client Settings
+   Create Roles and Users under realm
+   Configure Authentication
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Regular Expressions: 
+--------------------
+
+1. Regular expression literal => pattern eclosed in slashes
+    const re = /ab+c/;
+2. Calling constructor function of the RegExp object: 
+   const re = new RegExp("ab+c");
+
+Approach 2 is slower as it's a runtime compilation of the regular expression. However, it's used when regex expression is not known before hand.
+
+# Simple Pattern:
+/abcd/ => Directly tries to match "abcd" in the string
+
+Special Charachter => /ab*c/ => a(any number of times b) => abbc, abbbc, abcd
+Assertion:
+   ^ => matches beginning of input,  /^A/ => An eater, matches to "A" of An
+   $ => matches ending of input, /t$/ => eat, matches to "t" of eater
+   \b => matches a word boundary.  /\bm/ => space and then "m", /oon\b/ will match "oon" in "moon"
+   \B => non-word boundary (??)
+
+   x(?=y) => Match x only if x is followed by Y
+   x(?!y) => Match x only if x is not followed by y
+   (?<=y)x => Match x only if x is preceeded by y
+   (?<!y)x => Match x only if x is not preceeded by y
+
+Charachter Classes: 
+   [a-zA-Z0-9-_*@] => Match to a-z, A-Z, 0-9, "-", "_", "*"
+   [^a-z] => Compliment of a-z match class
+   "." => Match everything except new line
+   \d => Match any digit => [0-9]
+   \D => Compliment of \d
+   \w => Matches alphanumeric => [A-Za-z0-9_]
+   \W => Compliment of \w
+   \s => Matches single whitespace Charachter
+   \S => It's Compliment
+   x|y => Match either x or y
+
+Quantifiers: 
+   bo* => b(o) 0 or more times
+   bo+ => b(o) 1 or more times
+   x{n} => matches exactly n occurences of x
+   x{n,} => atleast name
+   x{n,m} => from n upto m occurences
+
+   Quantifiers are greedy by default => they will try to match as my times as possible. Adding "?" after will stop them after first match
+
+   QUERY WE NEED TO CREATE:
+   Bucket Name: 
+   required
+   minLength: 3
+   maxLength: 64
+   start-end: alphanumeric
+   cannot start with: "xn--"
+   cannot end with: "-s3alias"
+   contains: [a-z, 0-9, -]
+   consecutive periods (2 dots in a row)
+   cannot be ipAddress (ipv4 only)
+   
+   /^(?!xn--)[a-z0-9][a-z0-9-.]{1,62}[a-z0-9](?<!-s3alias)$/
